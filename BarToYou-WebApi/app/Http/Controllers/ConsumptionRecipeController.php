@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\comsumptionRecipeCollection;
+use App\Http\Resources\consumptionCategoryCollection;
 use App\Models\consumptionRecipe;
 use App\Http\Requests\StoreconsumptionRecipeRequest;
 use App\Http\Requests\UpdateconsumptionRecipeRequest;
@@ -13,7 +15,8 @@ class ConsumptionRecipeController extends Controller
      */
     public function index()
     {
-        //
+        $consumptionRecipe = consumptionRecipe::paginate(10);
+        return new comsumptionRecipeCollection($consumptionRecipe);
     }
 
     /**

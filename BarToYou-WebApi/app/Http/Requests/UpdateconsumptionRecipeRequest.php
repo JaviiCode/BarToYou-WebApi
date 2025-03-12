@@ -22,7 +22,10 @@ class UpdateconsumptionRecipeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'consumption_id' => 'required|exists:Consumption,id',
+            'ingredient_id' => 'required|exists:Ingredient,id',
+            'ingredient_amount' => 'required|numeric',
+            'ingredient_unit' => 'required|string|max:20',
         ];
     }
 }

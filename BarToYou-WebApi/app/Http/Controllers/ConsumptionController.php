@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\consumptionCollection;
 use App\Models\consumption;
 use App\Http\Requests\StoreconsumptionRequest;
 use App\Http\Requests\UpdateconsumptionRequest;
@@ -13,7 +14,8 @@ class ConsumptionController extends Controller
      */
     public function index()
     {
-        //
+        $consumption = consumption::paginate(10);
+        return new consumptionCollection($consumption);
     }
 
     /**

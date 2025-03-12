@@ -22,7 +22,11 @@ class UpdateorderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => 'required|exists:User,id',
+            'consumption_recipe_id' => 'required|exists:ConsumptionRecipe,id',
+            'date_time' => 'required|date',
+            'quantity' => 'required|integer',
+            'status_id' => 'required|exists:OrderStatus,id',
         ];
     }
 }

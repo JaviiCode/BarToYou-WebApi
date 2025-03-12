@@ -9,4 +9,22 @@ class ingredient extends Model
 {
     /** @use HasFactory<\Database\Factories\IngredientFactory> */
     use HasFactory;
+    protected $table = 'Ingredient';
+    protected $primaryKey = 'id';
+
+    protected $fillable = [
+        'name',
+        'stock',
+        'category_id',
+    ];
+
+    public function category()
+    {
+        return $this->belongsTo(IngredientCategory::class, 'category_id');
+    }
+
+    public function recipes()
+    {
+        return $this->hasMany(ConsumptionRecipe::class, 'ingredient_id');
+    }
 }

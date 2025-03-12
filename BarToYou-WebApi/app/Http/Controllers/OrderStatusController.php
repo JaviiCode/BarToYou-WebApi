@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\orderStatusCollection;
 use App\Models\orderStatus;
 use App\Http\Requests\StoreorderStatusRequest;
 use App\Http\Requests\UpdateorderStatusRequest;
@@ -13,7 +14,8 @@ class OrderStatusController extends Controller
      */
     public function index()
     {
-        //
+        $orderStatus = orderStatus::paginate(10);
+        return new orderStatusCollection($orderStatus);
     }
 
     /**

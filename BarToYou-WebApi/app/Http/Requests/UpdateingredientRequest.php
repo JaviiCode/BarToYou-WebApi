@@ -22,7 +22,9 @@ class UpdateingredientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:100',
+            'stock' => 'required|integer',
+            'category_id' => 'required|exists:IngredientCategory,id',
         ];
     }
 }

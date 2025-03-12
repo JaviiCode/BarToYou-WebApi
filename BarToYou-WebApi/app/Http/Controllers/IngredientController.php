@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ingredientCollection;
 use App\Models\ingredient;
 use App\Http\Requests\StoreingredientRequest;
 use App\Http\Requests\UpdateingredientRequest;
@@ -13,7 +14,8 @@ class IngredientController extends Controller
      */
     public function index()
     {
-        //
+        $ingredient = ingredient::paginate(10);
+        return new ingredientCollection($ingredient);
     }
 
     /**
