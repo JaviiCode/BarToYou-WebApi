@@ -11,7 +11,7 @@ class StoreconsumptionRecipeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class StoreconsumptionRecipeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'consumption_id' => 'required|exists:consumptions,id',
+            'ingredient_id' => 'required|exists:ingredients,id',
+            'ingredient_amount' => 'required|numeric',
+            'ingredient_unit' => 'required|string|max:20',
         ];
     }
 }

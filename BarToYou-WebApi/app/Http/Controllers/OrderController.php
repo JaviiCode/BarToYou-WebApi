@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\orderCollection;
+use App\Http\Resources\orderResource;
 use App\Models\order;
 use App\Http\Requests\StoreorderRequest;
 use App\Http\Requests\UpdateorderRequest;
@@ -31,15 +32,26 @@ class OrderController extends Controller
      */
     public function store(StoreorderRequest $request)
     {
-        //
+        if (Order::find($request->id)) {
+            return response('Error, el pedido ya existe.', 400);
+        }
+
+        $order = Order::create($request->all());
+        return new orderResource($order);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(order $order)
+    public function show($id)
     {
-        //
+        $order = Order::with(['members', 'recipe', 'status'])->find($id);
+
+        if (!$order) {
+            return response('Pedido no encontrado.', 404);
+        }
+
+        return new OrderResource($order);
     }
 
     /**
@@ -53,16 +65,30 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateorderRequest $request, order $order)
+    public function update(UpdateorderRequest $request, int $id)
     {
-        //
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response('Pedido no encontrado.', 404);
+        }
+
+        $updated = $order->update($request->all());
+        return response()->json(['success' => $updated]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(order $order)
+    public function destroy(int $id)
     {
-        //
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response('Pedido no encontrado.', 404);
+        }
+
+        $order->delete();
+        return response("Eliminación completada.");
     }
 }

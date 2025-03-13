@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\orderStatusCollection;
+use App\Http\Resources\orderStatusResource;
 use App\Models\orderStatus;
 use App\Http\Requests\StoreorderStatusRequest;
 use App\Http\Requests\UpdateorderStatusRequest;
@@ -31,15 +32,26 @@ class OrderStatusController extends Controller
      */
     public function store(StoreorderStatusRequest $request)
     {
-        //
+        if (OrderStatus::find($request->id)) {
+            return response('Error, el estado de pedido ya existe.', 400);
+        }
+
+        $status = OrderStatus::create($request->all());
+        return new orderStatusResource($status);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(orderStatus $orderStatus)
+    public function show($id)
     {
-        //
+        $status = OrderStatus::find($id);
+
+        if (!$status) {
+            return response('Estado de pedido no encontrado.', 404);
+        }
+
+        return new OrderStatusResource($status);
     }
 
     /**
@@ -53,16 +65,30 @@ class OrderStatusController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateorderStatusRequest $request, orderStatus $orderStatus)
+    public function update(UpdateorderStatusRequest $request, int $id)
     {
-        //
+        $status = OrderStatus::find($id);
+
+        if (!$status) {
+            return response('Estado de pedido no encontrado.', 404);
+        }
+
+        $updated = $status->update($request->all());
+        return response()->json(['success' => $updated]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(orderStatus $orderStatus)
+    public function destroy(int $id)
     {
-        //
+        $status = OrderStatus::find($id);
+
+        if (!$status) {
+            return response('Estado de pedido no encontrado.', 404);
+        }
+
+        $status->delete();
+        return response("Eliminación completada.");
     }
 }

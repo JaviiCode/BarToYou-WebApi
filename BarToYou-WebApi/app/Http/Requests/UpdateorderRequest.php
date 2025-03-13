@@ -11,7 +11,7 @@ class UpdateorderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class UpdateorderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:User,id',
+            'member_id' => 'required|exists:membr,id',
             'consumption_recipe_id' => 'required|exists:ConsumptionRecipe,id',
             'date_time' => 'required|date',
             'quantity' => 'required|integer',

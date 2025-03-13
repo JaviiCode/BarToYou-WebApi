@@ -16,13 +16,13 @@ class orderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
+            'member_id' => $this->member_id,
             'consumption_recipe_id' => $this->consumption_recipe_id,
             'date_time' => $this->date_time,
             'quantity' => $this->quantity,
             'status_id' => $this->status_id,
-            'user' => new UserResource($this->whenLoaded('user')),
-            'consumption_recipe' => new consumptionRecipeResource($this->whenLoaded('consumptionRecipe')),
+            'members' => new membersResource($this->whenLoaded('members')),
+            'consumption_recipe' => new consumptionRecipeResource($this->whenLoaded('recipe')),
             'status' => new orderStatusResource($this->whenLoaded('status')),
         ];
     }

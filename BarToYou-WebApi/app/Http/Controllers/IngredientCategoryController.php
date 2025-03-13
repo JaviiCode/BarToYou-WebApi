@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ingredientCategoryCollection;
+use App\Http\Resources\ingredientCategoryResource;
 use App\Models\ingredientCategory;
 use App\Http\Requests\StoreingredientCategoryRequest;
 use App\Http\Requests\UpdateingredientCategoryRequest;
@@ -31,15 +32,26 @@ class IngredientCategoryController extends Controller
      */
     public function store(StoreingredientCategoryRequest $request)
     {
-        //
+        if (IngredientCategory::find($request->id)) {
+            return response('Error, la categoría de ingrediente ya existe.', 400);
+        }
+
+        $category = IngredientCategory::create($request->all());
+        return new ingredientCategoryResource($category);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(ingredientCategory $ingredientCategory)
+    public function show($id)
     {
-        //
+        $category = IngredientCategory::find($id);
+
+        if (!$category) {
+            return response('Categoría de ingrediente no encontrada.', 404);
+        }
+
+        return new IngredientCategoryResource($category);
     }
 
     /**
@@ -53,16 +65,30 @@ class IngredientCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateingredientCategoryRequest $request, ingredientCategory $ingredientCategory)
+    public function update(UpdateingredientCategoryRequest $request, int $id)
     {
-        //
+        $category = IngredientCategory::find($id);
+
+        if (!$category) {
+            return response('Categoría de ingrediente no encontrada.', 404);
+        }
+
+        $updated = $category->update($request->all());
+        return response()->json(['success' => $updated]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ingredientCategory $ingredientCategory)
+    public function destroy(int $id)
     {
-        //
+        $category = IngredientCategory::find($id);
+
+        if (!$category) {
+            return response('Categoría de ingrediente no encontrada.', 404);
+        }
+
+        $category->delete();
+        return response("Eliminación completada.");
     }
 }

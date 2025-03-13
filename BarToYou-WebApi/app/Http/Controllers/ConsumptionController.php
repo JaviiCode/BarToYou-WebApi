@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\consumptionCollection;
+use App\Http\Resources\consumptionResource;
 use App\Models\consumption;
 use App\Http\Requests\StoreconsumptionRequest;
 use App\Http\Requests\UpdateconsumptionRequest;
@@ -31,15 +32,26 @@ class ConsumptionController extends Controller
      */
     public function store(StoreconsumptionRequest $request)
     {
-        //
+        if (Consumption::find($request->id)) {
+            return response('Error, el consumo ya existe.', 400);
+        }
+
+        $consumption = Consumption::create($request->all());
+        return new consumptionResource($consumption);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(consumption $consumption)
+    public function show($id)
     {
-        //
+        $consumption = Consumption::with('category')->find($id);
+
+        if (!$consumption) {
+            return response('Consumo no encontrado.', 404);
+        }
+
+        return new ConsumptionResource($consumption);
     }
 
     /**
@@ -53,16 +65,30 @@ class ConsumptionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateconsumptionRequest $request, consumption $consumption)
+    public function update(UpdateconsumptionRequest $request, int $id)
     {
-        //
+        $consumption = Consumption::find($id);
+
+        if (!$consumption) {
+            return response('Consumo no encontrado.', 404);
+        }
+
+        $updated = $consumption->update($request->all());
+        return response()->json(['success' => $updated]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(consumption $consumption)
+    public function destroy(int $id)
     {
-        //
+        $consumption = Consumption::find($id);
+
+        if (!$consumption) {
+            return response('Consumo no encontrado.', 404);
+        }
+
+        $consumption->delete();
+        return response("Eliminación completada.");
     }
 }

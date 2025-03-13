@@ -13,16 +13,16 @@ class order extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'user_id',
+        'member_id',
         'consumption_recipe_id',
         'date_time',
         'quantity',
         'status_id',
     ];
 
-    public function user()
+    public function members()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(members::class, 'member_id');
     }
 
     public function recipe()

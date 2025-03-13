@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\comsumptionRecipeCollection;
 use App\Http\Resources\consumptionCategoryCollection;
+use App\Http\Resources\consumptionRecipeResource;
 use App\Models\consumptionRecipe;
 use App\Http\Requests\StoreconsumptionRecipeRequest;
 use App\Http\Requests\UpdateconsumptionRecipeRequest;
@@ -32,15 +33,26 @@ class ConsumptionRecipeController extends Controller
      */
     public function store(StoreconsumptionRecipeRequest $request)
     {
-        //
+        if (ConsumptionRecipe::find($request->id)) {
+            return response('Error, la receta de consumo ya existe.', 400);
+        }
+
+        $recipe = ConsumptionRecipe::create($request->all());
+        return new consumptionRecipeResource($recipe);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(consumptionRecipe $consumptionRecipe)
+    public function show($id)
     {
-        //
+        $recipe = ConsumptionRecipe::with(['consumption', 'ingredient'])->find($id);
+
+        if (!$recipe) {
+            return response('Receta de consumo no encontrada.', 404);
+        }
+
+        return new ConsumptionRecipeResource($recipe);
     }
 
     /**
@@ -54,16 +66,30 @@ class ConsumptionRecipeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateconsumptionRecipeRequest $request, consumptionRecipe $consumptionRecipe)
+    public function update(UpdateconsumptionRecipeRequest $request, int $id)
     {
-        //
+        $recipe = ConsumptionRecipe::find($id);
+
+        if (!$recipe) {
+            return response('Receta de consumo no encontrada.', 404);
+        }
+
+        $updated = $recipe->update($request->all());
+        return response()->json(['success' => $updated]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(consumptionRecipe $consumptionRecipe)
+    public function destroy(int $id)
     {
-        //
+        $recipe = ConsumptionRecipe::find($id);
+
+        if (!$recipe) {
+            return response('Receta de consumo no encontrada.', 404);
+        }
+
+        $recipe->delete();
+        return response("Eliminación completada.");
     }
 }

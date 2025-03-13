@@ -5,6 +5,7 @@ use App\Http\Controllers\ConsumptionController;
 use App\Http\Controllers\ConsumptionRecipeController;
 use App\Http\Controllers\IngredientCategoryController;
 use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\MembersController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\RoleController;
@@ -15,9 +16,10 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+//, 'middleware' => 'auth:sanctum' (Poner justo aqui abajo)
+Route::group(['prefix' => 'bartoyou'], function () {
 
-Route::group(['prefix' => 'bartoyou', 'middleware' => 'auth:sanctum'], function () {
-
+    Route::apiResource('members', MembersController::class);
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('consumptions', ConsumptionController::class);
     Route::apiResource('consumption-categories', ConsumptionCategoryController::class);
