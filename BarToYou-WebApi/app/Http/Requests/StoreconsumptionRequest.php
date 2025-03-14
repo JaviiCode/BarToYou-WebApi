@@ -23,7 +23,7 @@ class StoreconsumptionRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
-            'category_id' => 'required|exists:consumption_categories,id',
+            'category_id' => 'required|exists:consumptioncategory,id',
         ];
     }
 }

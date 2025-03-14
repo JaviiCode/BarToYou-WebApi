@@ -23,10 +23,10 @@ class StoreorderRequest extends FormRequest
     {
         return [
             'member_id' => 'required|exists:members,id',
-            'consumption_recipe_id' => 'required|exists:consumption_recipes,id',
+            'consumption_recipe_id' => 'required|exists:consumptionrecipe,id',
             'date_time' => 'required|date',
             'quantity' => 'required|integer',
-            'status_id' => 'required|exists:order_statuses,id',
+            'status_id' => 'required|exists:orderstatus,id',
         ];
     }
 }

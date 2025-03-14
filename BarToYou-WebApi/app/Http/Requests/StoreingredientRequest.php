@@ -24,7 +24,7 @@ class StoreingredientRequest extends FormRequest
         return [
             'name' => 'required|string|max:100',
             'stock' => 'required|integer',
-            'category_id' => 'required|exists:ingredient_categories,id',
+            'category_id' => 'required|exists:ingredientcategory,id',
         ];
     }
 }

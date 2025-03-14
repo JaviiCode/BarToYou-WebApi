@@ -22,8 +22,8 @@ class StoreconsumptionRecipeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'consumption_id' => 'required|exists:consumptions,id',
-            'ingredient_id' => 'required|exists:ingredients,id',
+            'consumption_id' => 'required|exists:consumption,id',
+            'ingredient_id' => 'required|exists:ingredient,id',
             'ingredient_amount' => 'required|numeric',
             'ingredient_unit' => 'required|string|max:20',
         ];
