@@ -7,6 +7,7 @@ use App\Http\Resources\membersResource;
 use App\Models\members;
 use App\Http\Requests\StoremembersRequest;
 use App\Http\Requests\UpdatemembersRequest;
+use Illuminate\Support\Facades\Hash;
 
 class MembersController extends Controller
 {
@@ -33,10 +34,21 @@ class MembersController extends Controller
     public function store(StoremembersRequest $request)
     {
         if (members::find($request->id)) {
-            return response('Error, el miembro ya existe.', 400);
+            return response()->json(['message' => 'Error, usuario ya existe.'], 400);
         }
+        if (members::where('name', $request->name)->exists()) {
+            return response()->json(['message' => 'El nombre ya está registrado.'], 409);
+        }
+        $hashedPassword = Hash::make($request->password);
 
-        $member = members::create($request->all());
+        $member = members::create([
+            'name' => $request->name,
+            'password' => $hashedPassword,
+            'role_id' => $request->role_id,
+            'token' => null,
+            'expiration_date_token' => null,
+        ]);
+
         return new membersResource($member);
     }
 
