@@ -12,8 +12,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // Registrar middlewares globales (opcional)
+        // $middleware->append(\App\Http\Middleware\ExampleMiddleware::class);
+
+        // Registrar middlewares de ruta
+        $middleware->alias([
+            'authMiddleware' => \App\Http\Middleware\AuthMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // Configuración de manejo de excepciones (opcional)
     })->create();
