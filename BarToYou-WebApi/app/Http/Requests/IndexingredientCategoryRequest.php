@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndexroleRequest extends FormRequest
+class IndexingredientCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class IndexroleRequest extends FormRequest
     {
         $member = $this->user();
         // Verificar si el usuario tiene los permisos necesarios
-        return $member->role->name === 'Administrador';
+        return $member->role->name === 'Administrador' || $member->role->name === 'Camarero';
     }
 
     /**

@@ -23,29 +23,23 @@ class authMiddleware
             return response('Token no proporcionado.', 401);
         }
 
-        // 2. Eliminar el prefijo "Bearer " del token (si está presente)
+        //Eliminar el prefijo "Bearer " del token (si está presente)
         $token = str_replace('Bearer ', '', $token);
 
-        // Depuración: Mostrar el token recibido
-        \Log::info('Token recibido:', ['token' => $token]);
-
-        // 3. Verificar el token en la base de datos
+        //Verificar el token en la base de datos
         $member = Members::where('token', $token)->first();
-
-        // Depuración: Mostrar el resultado de la búsqueda
-        \Log::info('Resultado de la búsqueda:', ['member' => $member]);
-
         if (!$member) {
             return response('Token inválido.', 401);
         }
 
-        // 4. Verificar si el token ha expirado
+
+        //Verificar si el token ha expirado
         if (strtotime($member->expiration_date_token) < time()) {
             return response('Token expirado.', 401);
         }
 
         $request->setUserResolver(fn() => $member);
-        
+
         // 5. Continuar con la solicitud
         return $next($request);
     }
