@@ -14,7 +14,7 @@ class authMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next): Response
     {
         // 1. Obtener el token de la cabecera de la solicitud
         $token = $request->header('Authorization');
@@ -23,27 +23,30 @@ class authMiddleware
             return response('Token no proporcionado.', 401);
         }
 
-        // 2. Verificar el token en la base de datos
+        // 2. Eliminar el prefijo "Bearer " del token (si está presente)
+        $token = str_replace('Bearer ', '', $token);
+
+        // Depuración: Mostrar el token recibido
+        \Log::info('Token recibido:', ['token' => $token]);
+
+        // 3. Verificar el token en la base de datos
         $member = Members::where('token', $token)->first();
+
+        // Depuración: Mostrar el resultado de la búsqueda
+        \Log::info('Resultado de la búsqueda:', ['member' => $member]);
 
         if (!$member) {
             return response('Token inválido.', 401);
         }
 
-        // 3. Verificar si el token ha expirado
+        // 4. Verificar si el token ha expirado
         if (strtotime($member->expiration_date_token) < time()) {
             return response('Token expirado.', 401);
         }
 
-        // 4. Verificar el rol del usuario
-        if ($member->role->name !== $role) {
-            return response('No tienes permiso para acceder a esta ruta.', 403);
-        }
-
-        // 5. Renovar el token si es necesario (opcional)
-       // $this->renewToken($member);
-
-        // 6. Continuar con la solicitud
+        $request->setUserResolver(fn() => $member);
+        
+        // 5. Continuar con la solicitud
         return $next($request);
     }
 }

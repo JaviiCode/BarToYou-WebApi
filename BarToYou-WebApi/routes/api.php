@@ -17,19 +17,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 //, 'middleware' => 'auth:sanctum' (Poner justo aqui abajo)
-Route::group(['prefix' => 'bartoyou'], function () {
+Route::group(['prefix' => 'bartoyou', 'middleware' => 'authMiddleware'], function () {
 
-    Route::group(['middleware' => 'authMiddleware:Administrador'], function () {
-        Route::apiResource('members', MembersController::class);
-        Route::apiResource('roles', RoleController::class);
-    });
-
-    Route::group(['middleware' => 'authMiddleware:Camarero'], function () {
-        Route::apiResource('orders', OrderController::class);
-    });
-
-    //Route::apiResource('members', MembersController::class);
-    //Route::apiResource('roles', RoleController::class);
+    Route::apiResource('members', MembersController::class);
+    Route::apiResource('roles', RoleController::class);
     Route::apiResource('consumptions', ConsumptionController::class);
     Route::apiResource('consumption-categories', ConsumptionCategoryController::class);
     Route::apiResource('ingredients', IngredientController::class);

@@ -50,7 +50,7 @@ if (!$user || !password_verify($password, $user['password'])) {
 
 // Generar un nuevo token
 $token = bin2hex(random_bytes(32));
-$expiration = date("Y-m-d H:i:s", strtotime("+1 hour"));
+$expiration = date("Y-m-d H:i:s", strtotime("+20 hour"));
 
 // Guardar el token en la base de datos
 $stmt = $pdo->prepare("UPDATE members SET token = :token, expiration_date_token = :expiration WHERE id = :id");

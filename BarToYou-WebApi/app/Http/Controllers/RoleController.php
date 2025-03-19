@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexroleRequest;
 use App\Http\Resources\roleCollection;
 use App\Http\Resources\roleResource;
 use App\Models\role;
@@ -13,7 +14,7 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexroleRequest $request)
     {
         $role = role::paginate(10);
         return new roleCollection($role);
