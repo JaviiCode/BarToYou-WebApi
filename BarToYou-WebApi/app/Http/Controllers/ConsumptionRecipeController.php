@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexconsumptionRecipeRequest;
 use App\Http\Resources\comsumptionRecipeCollection;
 use App\Http\Resources\consumptionCategoryCollection;
 use App\Http\Resources\consumptionRecipeResource;
@@ -14,7 +15,7 @@ class ConsumptionRecipeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexconsumptionRecipeRequest $request)
     {
         $consumptionRecipe = consumptionRecipe::paginate(10);
         return new comsumptionRecipeCollection($consumptionRecipe);

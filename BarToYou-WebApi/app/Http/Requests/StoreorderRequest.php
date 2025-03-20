@@ -11,7 +11,9 @@ class StoreorderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $member = $this->user();
+        // Verificar si el usuario tiene los permisos necesarios
+        return $member->role->name === 'Administrador' || $member->role->name === 'Camarero';
     }
 
     /**

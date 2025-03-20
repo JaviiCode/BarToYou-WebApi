@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexingredientRequest;
 use App\Http\Resources\ingredientCollection;
 use App\Http\Resources\ingredientResource;
 use App\Models\ingredient;
@@ -13,7 +14,7 @@ class IngredientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexingredientRequest $request)
     {
         $ingredient = ingredient::paginate(10);
         return new ingredientCollection($ingredient);

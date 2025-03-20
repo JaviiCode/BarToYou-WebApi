@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexmembersRequest;
 use App\Http\Resources\membersCollection;
 use App\Http\Resources\membersResource;
 use App\Models\members;
@@ -14,7 +15,7 @@ class MembersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexmembersRequest $request)
     {
         $members = members::paginate(10);
         return new membersCollection($members);

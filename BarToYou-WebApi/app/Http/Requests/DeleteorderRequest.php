@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatemembersRequest extends FormRequest
+class DeleteorderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class UpdatemembersRequest extends FormRequest
     {
         $member = $this->user();
         // Verificar si el usuario tiene los permisos necesarios
-        return $member->role->name === 'Administrador';
+        return $member->role->name === 'Administrador' || $member->role->name === 'Camarero';
     }
 
     /**
@@ -24,11 +24,7 @@ class UpdatemembersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|string|max:100',
-            'password' => 'sometimes|string|max:255',
-            'token' => 'nullable|string|max:255',
-            'expiration_date_token' => 'nullable|date',
-            'role_id' => 'sometimes|exists:role,id',
+            //
         ];
     }
 }

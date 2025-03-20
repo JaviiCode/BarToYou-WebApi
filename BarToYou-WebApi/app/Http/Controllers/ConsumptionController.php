@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexconsumptionRequest;
 use App\Http\Resources\consumptionCollection;
 use App\Http\Resources\consumptionResource;
 use App\Models\consumption;
@@ -13,7 +14,7 @@ class ConsumptionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexconsumptionRequest $request)
     {
         $consumption = consumption::paginate(10);
         return new consumptionCollection($consumption);

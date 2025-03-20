@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexorderRequest;
 use App\Http\Resources\orderCollection;
 use App\Http\Resources\orderResource;
 use App\Models\order;
@@ -13,7 +14,7 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexorderRequest $request)
     {
         $order = order::paginate(10);
         return new orderCollection($order);

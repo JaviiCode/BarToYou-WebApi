@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexconsumptionCategoryRequest;
 use App\Http\Resources\consumptionCategoryCollection;
 use App\Http\Resources\consumptionCategoryResource;
 use App\Models\consumptionCategory;
@@ -13,7 +14,7 @@ class ConsumptionCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexconsumptionCategoryRequest $request)
     {
         $consumptionCategory = consumptionCategory::paginate(10);
         return new consumptionCategoryCollection($consumptionCategory);

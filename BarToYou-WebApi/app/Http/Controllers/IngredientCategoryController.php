@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexingredientCategoryRequest;
 use App\Http\Resources\ingredientCategoryCollection;
 use App\Http\Resources\ingredientCategoryResource;
 use App\Models\ingredientCategory;
@@ -13,7 +14,7 @@ class IngredientCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(IndexingredientCategoryRequest $request)
     {
         $ingredientCategory = ingredientCategory::paginate(10);
         return new ingredientCategoryCollection($ingredientCategory);
