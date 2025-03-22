@@ -9,6 +9,9 @@ use App\Models\members;
 use App\Http\Requests\StoremembersRequest;
 use App\Http\Requests\UpdatemembersRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class MembersController extends Controller
 {
@@ -104,4 +107,50 @@ class MembersController extends Controller
         $member->delete();
         return response("Eliminación completada.");
     }
+
+    public function checkToken(Request $request)
+{
+    // Validar que el token esté presente en la solicitud
+    $request->validate([
+        'token' => 'required|string',
+    ]);
+
+    // Obtener el token de la solicitud
+    $token = $request->input('token');
+
+    // Buscar al miembro por el token en la tabla members
+    $member = DB::table('members')
+        ->where('token', $token)
+        ->first();
+
+    // Si no se encuentra el miembro, devolver false
+    if (!$member) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Token inválido.',
+        ], 401);
+    }
+
+    // Verificar si el token ha expirado
+    $now = Carbon::now();
+    if ($member->expiration_date_token && $now->greaterThan($member->expiration_date_token)) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Token expirado.',
+        ], 401);
+    }
+
+    // Devolver los datos del miembro
+    return response()->json([
+        'success' => true,
+        'member' => [
+            'id' => $member->id,
+            'name' => $member->name,
+            'email' => $member->email,
+            'role_id' => $member->role_id,
+            'token' => $member->token,
+            'expiration_date_token' => $member->expiration_date_token,
+        ],
+    ]);
+}
 }

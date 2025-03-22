@@ -16,6 +16,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::post('/check-token', [MembersController::class, 'checkToken']);
+
 //, 'middleware' => 'auth:sanctum' (Poner justo aqui abajo)
 Route::group(['prefix' => 'bartoyou', 'middleware' => 'authMiddleware'], function () {
 
