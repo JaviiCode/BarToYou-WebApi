@@ -17,8 +17,11 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/check-token', [MembersController::class, 'checkToken']);
-Route::post('/orders', [OrderController::class, 'store']); // Guardar un pedido
+//Rutas de pedidos personalizados
+Route::post('/orders', [OrderController::class, 'store']);
 Route::get('/orders/user/{userId}', [OrderController::class, 'getOrdersByUser']);
+//Ruta para crear bebidas custom
+Route::post('/custom-drink', [ConsumptionRecipeController::class, 'createCustomDrink']);
 
 
 //, 'middleware' => 'authMiddleware' (Poner justo aqui abajo)
