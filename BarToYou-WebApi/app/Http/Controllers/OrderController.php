@@ -125,7 +125,4 @@ class OrderController extends Controller
         // Devolver la respuesta agrupada por custom_drink_id
         return response()->json($groupedOrders);
     }
-
-
-
 }
