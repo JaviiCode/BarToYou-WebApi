@@ -17,8 +17,11 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/check-token', [MembersController::class, 'checkToken']);
+Route::post('/orders', [OrderController::class, 'store']); // Guardar un pedido
+Route::get('/orders/user/{userId}', [OrderController::class, 'getOrdersByUser']);
 
-//, 'middleware' => 'auth:sanctum' (Poner justo aqui abajo)
+
+//, 'middleware' => 'authMiddleware' (Poner justo aqui abajo)
 Route::group(['prefix' => 'bartoyou', 'middleware' => 'authMiddleware'], function () {
 
     Route::apiResource('members', MembersController::class);

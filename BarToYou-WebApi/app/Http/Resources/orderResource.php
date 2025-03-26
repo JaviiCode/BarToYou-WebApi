@@ -20,6 +20,7 @@ class orderResource extends JsonResource
             'consumption_recipe_id' => $this->consumption_recipe_id,
             'date_time' => $this->date_time,
             'quantity' => $this->quantity,
+            'custom_drink_id' => $this->custom_drink_id,
             'status_id' => $this->status_id,
             'members' => new membersResource($this->whenLoaded('members')),
             'consumption_recipe' => new consumptionRecipeResource($this->whenLoaded('recipe')),

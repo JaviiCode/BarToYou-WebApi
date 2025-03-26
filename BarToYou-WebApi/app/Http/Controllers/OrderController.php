@@ -46,7 +46,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = Order::with(['members', 'recipe', 'status'])->find($id);
+        $order = Order::with(['members', 'recipes', 'status'])->find($id);
 
         if (!$order) {
             return response('Pedido no encontrado.', 404);
@@ -92,4 +92,40 @@ class OrderController extends Controller
         $order->delete();
         return response("Eliminación completada.");
     }
+
+    public function getOrdersByUser($userId)
+    {
+        // Obtener las órdenes del usuario específico
+        $orders = Order::where('member_id', $userId)
+            ->with(['recipes.consumption', 'recipes.ingredient', 'status'])
+            ->get();
+
+        // Filtrar y agrupar por custom_drink_id
+        $groupedOrders = $orders->groupBy('custom_drink_id')->map(function ($group) {
+            // Si el grupo tiene un custom_drink_id, agrupamos las órdenes correspondientes
+            return [
+                'custom_drink_id' => $group->first()->custom_drink_id,
+                'user_id' => $group->first()->member_id,
+                'date_time' => $group->first()->date_time,
+                'status' => $group->first()->status->name,
+                'items' => $group->map(function ($order) {
+                    return [
+                        'name' => 'Bebida Personalizada',
+                        'ingredients' => $order->recipes->map(function ($recipe) {
+                            return [
+                                'ingredient' => $recipe->ingredient->name ?? 'Desconocido',
+                                'amount' => $recipe->ingredient_amount ?? 0 . ' ' . $recipe->ingredient_unit,
+                            ];
+                        })->values()
+                    ];
+                })->values()
+            ];
+        })->values();
+
+        // Devolver la respuesta agrupada por custom_drink_id
+        return response()->json($groupedOrders);
+    }
+
+
+
 }

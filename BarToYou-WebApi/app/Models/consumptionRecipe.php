@@ -19,6 +19,10 @@ class consumptionRecipe extends Model
         'ingredient_unit',
     ];
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'consumption_recipe_id');
+    }
     public function consumption()
     {
         return $this->belongsTo(Consumption::class, 'consumption_id');
