@@ -100,7 +100,6 @@ class ConsumptionRecipeController extends Controller
 
     public function createCustomDrink(Request $request)
     {
-        // Validación de la entrada
         $request->validate([
             'user_id' => 'required|integer',
             'base_drink' => 'required|string',
@@ -112,10 +111,9 @@ class ConsumptionRecipeController extends Controller
             'ice_type' => 'nullable|string|in:normal,picado',
         ]);
 
-        // Generar un custom_drink_id único
-        $customDrinkId = '#'.rand(1000, 9999);
+        $customDrinkId = "#" . rand(1000, 9999); // Sin el #
 
-        // Crear la nueva orden para la bebida personalizada
+        // Crear la orden
         $order = Order::create([
             'member_id' => $request->user_id,
             'date_time' => Carbon::now(),
@@ -124,8 +122,8 @@ class ConsumptionRecipeController extends Controller
             'custom_drink_id' => $customDrinkId,
         ]);
 
-        // Agregar la bebida base seleccionada por el usuario a la tabla ConsumptionRecipe
-        ConsumptionRecipe::create([
+        // Insertar la base de la bebida
+        $baseRecipe = ConsumptionRecipe::create([
             'consumption_id' => $request->base_drink_id,
             'ingredient_id' => $request->base_drink_id,
             'ingredient_amount' => 50.00,
@@ -145,7 +143,6 @@ class ConsumptionRecipeController extends Controller
 
         if ($request->has('ice') && $request->ice) {
             $iceId = Consumption::where('name', 'Hielo')->first()->id ?? null;
-
             if ($iceId) {
                 $iceType = $request->ice_type ?? 'normal';
                 ConsumptionRecipe::create([
@@ -157,10 +154,20 @@ class ConsumptionRecipeController extends Controller
                 ]);
             }
         }
+
+        // Obtener el primer ConsumptionRecipe insertado
+        $firstRecipe = ConsumptionRecipe::where('custom_drink_id', $customDrinkId)->first();
+
+
+        // Asignar la receta a la orden
+        $order->consumption_recipe_id = $firstRecipe->id;
+        $order->save();
+
         return response()->json([
             'custom_drink_id' => $customDrinkId,
             'order_id' => $order->id,
             'status' => 'success',
         ]);
     }
+
 }

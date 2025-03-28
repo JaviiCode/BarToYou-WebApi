@@ -28,7 +28,7 @@ class order extends Model
 
     public function recipes()
     {
-        return $this->hasMany(ConsumptionRecipe::class, 'id', 'consumption_recipe_id');
+        return $this->hasMany(ConsumptionRecipe::class, 'id', 'consumption_recipe_id',);
     }
 
 

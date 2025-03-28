@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\IndexorderRequest;
 use App\Http\Resources\orderCollection;
 use App\Http\Resources\orderResource;
+use App\Models\consumptionRecipe;
 use App\Models\order;
 use App\Http\Requests\StoreorderRequest;
 use App\Http\Requests\UpdateorderRequest;
@@ -95,34 +96,36 @@ class OrderController extends Controller
 
     public function getOrdersByUser($userId)
     {
-        // Obtener las órdenes del usuario específico
         $orders = Order::where('member_id', $userId)
-            ->with(['recipes.consumption', 'recipes.ingredient', 'status'])
+            ->with(['status'])
             ->get();
 
-        // Filtrar y agrupar por custom_drink_id
-        $groupedOrders = $orders->groupBy('custom_drink_id')->map(function ($group) {
-            // Si el grupo tiene un custom_drink_id, agrupamos las órdenes correspondientes
+        return response()->json($orders->groupBy('custom_drink_id')->map(function ($group) {
+            // Obtener el custom_drink_id
+            $customDrinkId = $group->first()->custom_drink_id;
+
+            // Obtener todas las recetas de este custom_drink_id
+            $recipes = consumptionRecipe::where('custom_drink_id', $customDrinkId)
+                ->with('ingredient')
+                ->get();
+
             return [
-                'custom_drink_id' => $group->first()->custom_drink_id,
+                'custom_drink_id' => $customDrinkId,
                 'user_id' => $group->first()->member_id,
                 'date_time' => $group->first()->date_time,
                 'status' => $group->first()->status->name,
-                'items' => $group->map(function ($order) {
-                    return [
+                'items' => [
+                    [
                         'name' => 'Bebida Personalizada',
-                        'ingredients' => $order->recipes->map(function ($recipe) {
+                        'ingredients' => $recipes->map(function ($recipe) {
                             return [
                                 'ingredient' => $recipe->ingredient->name ?? 'Desconocido',
-                                'amount' => $recipe->ingredient_amount ?? 0 . ' ' . $recipe->ingredient_unit,
+                                'amount' => $recipe->ingredient_amount,
                             ];
-                        })->values()
-                    ];
-                })->values()
+                        })->values(),
+                    ]
+                ]
             ];
-        })->values();
-
-        // Devolver la respuesta agrupada por custom_drink_id
-        return response()->json($groupedOrders);
+        })->values());
     }
 }

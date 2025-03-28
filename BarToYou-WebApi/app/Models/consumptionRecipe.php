@@ -17,6 +17,7 @@ class consumptionRecipe extends Model
         'ingredient_id',
         'ingredient_amount',
         'ingredient_unit',
+        'custom_drink_id', 
     ];
 
     public function order()
