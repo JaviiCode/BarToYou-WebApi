@@ -24,7 +24,8 @@ class UpdateconsumptionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:100',
+            'name' => 'sometimes|required|string|max:100',
+            'image_url' => 'sometimes|required|string|max:100',
             'category_id' => 'required|exists:ConsumptionCategory,id',
         ];
     }

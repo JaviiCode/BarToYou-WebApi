@@ -33,12 +33,29 @@ class ConsumptionController extends Controller
      */
     public function store(StoreconsumptionRequest $request)
     {
-        if (Consumption::find($request->id)) {
-            return response('Error, el consumo ya existe.', 400);
-        }
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'category_id' => 'required|integer|exists:ConsumptionCategory,id',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-        $consumption = Consumption::create($request->all());
-        return new consumptionResource($consumption);
+        // Guardar la imagen en el storage
+        $path = $request->file('image')->store('public/drinks');
+
+        // Obtener la URL de la imagen
+        $imageUrl = asset(str_replace('public/', 'storage/', $path));
+
+        // Guardar la bebida en la BD
+        $drink = Consumption::create([
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'image_url' => $imageUrl
+        ]);
+
+        return response()->json([
+            'message' => 'Bebida añadida con éxito',
+            'drink' => $drink
+        ], 201);
     }
 
     /**
