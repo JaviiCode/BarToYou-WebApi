@@ -17,7 +17,7 @@ class consumptionResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'image_url' => $this->name,
+            'image_url' => $this->image_url,
             'category_id' => $this->category_id,
             'category' => new consumptionCategoryResource($this->whenLoaded('category')),
         ];
