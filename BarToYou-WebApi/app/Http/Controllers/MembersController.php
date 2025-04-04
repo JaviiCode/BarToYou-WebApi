@@ -8,6 +8,7 @@ use App\Http\Resources\membersResource;
 use App\Models\members;
 use App\Http\Requests\StoremembersRequest;
 use App\Http\Requests\UpdatemembersRequest;
+use App\Models\role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;

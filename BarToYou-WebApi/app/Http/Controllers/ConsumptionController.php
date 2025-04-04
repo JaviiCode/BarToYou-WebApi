@@ -16,7 +16,7 @@ class ConsumptionController extends Controller
      */
     public function index(IndexconsumptionRequest $request)
     {
-        $consumption = consumption::paginate(10);
+        $consumption = consumption::all();
         return new consumptionCollection($consumption);
     }
 

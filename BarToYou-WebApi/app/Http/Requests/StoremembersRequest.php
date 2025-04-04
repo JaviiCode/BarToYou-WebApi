@@ -11,9 +11,7 @@ class StoremembersRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $member = $this->user();
-        // Verificar si el usuario tiene los permisos necesarios
-        return $member->role->name === 'Administrador';
+        return true;
     }
 
     /**
