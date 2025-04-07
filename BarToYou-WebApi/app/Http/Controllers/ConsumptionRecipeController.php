@@ -111,7 +111,7 @@ class ConsumptionRecipeController extends Controller
             'ice_type' => 'nullable|string|in:normal,picado',
         ]);
 
-        $customDrinkId = "#" . rand(1000, 9999); // Sin el #
+        $customDrinkId = "#" . rand(1000, 9999);
 
         // Crear la orden
         $order = Order::create([
