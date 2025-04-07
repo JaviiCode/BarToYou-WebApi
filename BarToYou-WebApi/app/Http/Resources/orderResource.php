@@ -18,6 +18,7 @@ class orderResource extends JsonResource
             'id' => $this->id,
             'member_id' => $this->member_id,
             'consumption_recipe_id' => $this->consumption_recipe_id,
+            'consumption_id' => $this->consumption_id,
             'date_time' => $this->date_time,
             'quantity' => $this->quantity,
             'custom_drink_id' => $this->custom_drink_id,

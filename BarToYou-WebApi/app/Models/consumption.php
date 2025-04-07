@@ -23,6 +23,11 @@ class consumption extends Model
         return $this->belongsTo(ConsumptionCategory::class, 'category_id');
     }
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'consumption_id');
+    }
+
     public function recipes()
     {
         return $this->hasMany(ConsumptionRecipe::class, 'consumption_id');

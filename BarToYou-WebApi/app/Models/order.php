@@ -15,6 +15,7 @@ class order extends Model
     protected $fillable = [
         'member_id',
         'consumption_recipe_id',
+        'consumption_id',
         'date_time',
         'quantity',
         'custom_drink_id',
@@ -31,7 +32,10 @@ class order extends Model
         return $this->hasMany(ConsumptionRecipe::class, 'id', 'consumption_recipe_id',);
     }
 
-
+    public function consumptions()
+    {
+        return $this->hasMany(consumption::class, 'id', 'consumption_id',);
+    }
     public function status()
     {
         return $this->belongsTo(OrderStatus::class, 'status_id');
