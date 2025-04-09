@@ -18,6 +18,7 @@ class ingredientResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'stock' => $this->stock,
+            'ingredient_unit' => $this->ingredient_unit,
             'category_id' => $this->category_id,
             'category' => new ingredientCategoryResource($this->whenLoaded('category')),
         ];
