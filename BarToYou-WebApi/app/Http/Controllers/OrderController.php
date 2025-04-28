@@ -110,6 +110,7 @@ class OrderController extends Controller
                 ->get();
 
             return [
+                'orderid' => $group->first()->id,
                 'custom_drink_id' => $customDrinkId,
                 'user_id' => $group->first()->member_id,
                 'date_time' => $group->first()->date_time,
@@ -128,4 +129,5 @@ class OrderController extends Controller
             ];
         })->values());
     }
+
 }
