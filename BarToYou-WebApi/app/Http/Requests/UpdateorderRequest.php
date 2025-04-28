@@ -25,11 +25,11 @@ class UpdateorderRequest extends FormRequest
     {
         return [
             'member_id' => 'required|exists:members,id',
-            'consumption_recipe_id' => 'required|exists:ConsumptionRecipe,id',
-            'consumption_id' => 'nullable|exists:Consumption,id',
-            'date_time' => 'required|date',
-            'quantity' => 'required|integer',
-            'status_id' => 'required|exists:OrderStatus,id',
+            'consumption_recipe_id' => 'sometimes|required|exists:ConsumptionRecipe,id',
+            'consumption_id' => 'sometimes|nullable|exists:Consumption,id',
+            'date_time' => 'sometimes|required|date',
+            'quantity' => 'sometimes|required|integer',
+            'status_id' => 'sometimes|required|exists:OrderStatus,id',
         ];
     }
 }
