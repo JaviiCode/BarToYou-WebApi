@@ -38,7 +38,14 @@ class OrderController extends Controller
             return response('Error, el pedido ya existe.', 400);
         }
 
-        $order = Order::create($request->all());
+        $customDrinkId = "#" . rand(1000, 9999);
+
+        // Combina los datos del request con el nuevo campo
+        $data = $request->all();
+        $data['custom_drink_id'] = $customDrinkId;
+
+        $order = Order::create($data);
+
         return new orderResource($order);
     }
 
