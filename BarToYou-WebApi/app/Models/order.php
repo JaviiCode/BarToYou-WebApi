@@ -32,10 +32,10 @@ class order extends Model
         return $this->hasMany(ConsumptionRecipe::class, 'id', 'consumption_recipe_id',);
     }
 
-    public function consumptions()
-    {
-        return $this->hasMany(consumption::class, 'id', 'consumption_id',);
-    }
+    public function consumption()
+{
+    return $this->belongsTo(Consumption::class, 'consumption_id');
+}
     public function status()
     {
         return $this->belongsTo(OrderStatus::class, 'status_id');

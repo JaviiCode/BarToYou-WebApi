@@ -25,7 +25,7 @@ class consumption extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'consumption_id');
+        return $this->hasMany(Order::class, 'consumption_id');
     }
 
     public function recipes()
