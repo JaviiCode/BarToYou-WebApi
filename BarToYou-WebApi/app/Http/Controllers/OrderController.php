@@ -9,6 +9,8 @@ use App\Models\consumptionRecipe;
 use App\Models\order;
 use App\Http\Requests\StoreorderRequest;
 use App\Http\Requests\UpdateorderRequest;
+use Illuminate\Support\Facades\Storage;
+
 
 class OrderController extends Controller
 {
@@ -104,37 +106,50 @@ class OrderController extends Controller
     public function getOrdersByUser($userId)
     {
         $orders = Order::where('member_id', $userId)
-            ->with(['status'])
+            ->with(['status', 'consumption'])
             ->get();
 
-        return response()->json($orders->groupBy('custom_drink_id')->map(function ($group) {
-            // Obtener el custom_drink_id
-            $customDrinkId = $group->first()->custom_drink_id;
-
-            // Obtener todas las recetas de este custom_drink_id
-            $recipes = consumptionRecipe::where('custom_drink_id', $customDrinkId)
-                ->with('ingredient')
-                ->get();
-
-            return [
-                'orderid' => $group->first()->id,
-                'custom_drink_id' => $customDrinkId,
-                'user_id' => $group->first()->member_id,
-                'date_time' => $group->first()->date_time,
-                'status' => $group->first()->status->name,
-                'items' => [
-                    [
-                        'name' => 'Bebida Personalizada',
-                        'ingredients' => $recipes->map(function ($recipe) {
-                            return [
-                                'ingredient' => $recipe->ingredient->name ?? 'Desconocido',
-                                'amount' => $recipe->ingredient_amount,
-                            ];
-                        })->values(),
-                    ]
-                ]
+        return response()->json($orders->map(function ($order) {
+            $item = [
+                'orderid' => $order->id,
+                'custom_drink_id' => $order->custom_drink_id,
+                'user_id' => $order->member_id,
+                'date_time' => $order->date_time,
+                'status' => $order->status->name,
+                'items' => []
             ];
-        })->values());
-    }
 
+            // Si es bebida normal (basado en consumo)
+            if ($order->consumption_id && $order->consumption) {
+                $imageUrl = $order->consumption->image_url;
+                
+                if ($imageUrl && strpos($imageUrl, '/storage/') === 0) {
+                    $imageUrl = substr($imageUrl, 9);
+                }
+
+                $item['items'][] = [
+                    'name' => $order->consumption->name,
+                    'description' => $order->consumption->description,
+                    'image_url' => $imageUrl,
+                ];
+            } else {
+                // Bebida personalizada
+                $recipes = consumptionRecipe::where('custom_drink_id', $order->custom_drink_id)
+                    ->with('ingredient')
+                    ->get();
+
+                $item['items'][] = [
+                    'name' => 'Bebida Personalizada',
+                    'ingredients' => $recipes->map(function ($recipe) {
+                        return [
+                            'ingredient' => $recipe->ingredient->name ?? 'Desconocido',
+                            'amount' => $recipe->ingredient_amount,
+                        ];
+                    })->values()
+                ];
+            }
+
+            return $item;
+        }));
+    }
 }
