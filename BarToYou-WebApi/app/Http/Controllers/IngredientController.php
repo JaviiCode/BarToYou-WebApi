@@ -8,11 +8,21 @@ use App\Http\Resources\ingredientResource;
 use App\Models\ingredient;
 use App\Http\Requests\StoreingredientRequest;
 use App\Http\Requests\UpdateingredientRequest;
+use OpenApi\Annotations as OA;
+
 
 class IngredientController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/ingredients",
+     *     summary="Listar ingredientes",
+     *     tags={"Ingredients"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista paginada de ingredientes"
+     *     )
+     * )
      */
     public function index(IndexingredientRequest $request)
     {
@@ -29,7 +39,27 @@ class IngredientController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/bartoyou/ingredients",
+     *     summary="Crear un nuevo ingrediente",
+     *     tags={"Ingredients"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="Vodka"),
+     *             @OA\Property(property="category_id", type="integer", example=1),
+     *             @OA\Property(property="unit", type="string", example="ml")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Ingrediente creado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="El ingrediente ya existe"
+     *     )
+     * )
      */
     public function store(StoreingredientRequest $request)
     {
@@ -42,7 +72,26 @@ class IngredientController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/ingredients/{id}",
+     *     summary="Obtener un ingrediente por ID",
+     *     tags={"Ingredients"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del ingrediente",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ingrediente encontrado"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Ingrediente no encontrado"
+     *     )
+     * )
      */
     public function show($id)
     {
@@ -64,7 +113,34 @@ class IngredientController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/bartoyou/ingredients/{id}",
+     *     summary="Actualizar un ingrediente",
+     *     tags={"Ingredients"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del ingrediente",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="Zumo de piña"),
+     *             @OA\Property(property="category_id", type="integer", example=2),
+     *             @OA\Property(property="unit", type="string", example="ml")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ingrediente actualizado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Ingrediente no encontrado"
+     *     )
+     * )
      */
     public function update(UpdateingredientRequest $request, int $id)
     {
@@ -79,7 +155,26 @@ class IngredientController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/bartoyou/ingredients/{id}",
+     *     summary="Eliminar un ingrediente",
+     *     tags={"Ingredients"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del ingrediente",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ingrediente eliminado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Ingrediente no encontrado"
+     *     )
+     * )
      */
     public function destroy(int $id)
     {

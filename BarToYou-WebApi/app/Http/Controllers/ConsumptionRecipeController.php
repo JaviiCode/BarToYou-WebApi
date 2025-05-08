@@ -13,11 +13,21 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreconsumptionRecipeRequest;
 use App\Http\Requests\UpdateconsumptionRecipeRequest;
+use OpenApi\Annotations as OA;
+
 
 class ConsumptionRecipeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/consumption-recipes",
+     *     summary="Listar todas las recetas de consumo",
+     *     tags={"Consumption Recipes"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de recetas paginada"
+     *     )
+     * )
      */
     public function index(IndexconsumptionRecipeRequest $request)
     {
@@ -34,7 +44,29 @@ class ConsumptionRecipeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/bartoyou/consumption-recipes",
+     *     summary="Crear una nueva receta de consumo",
+     *     tags={"Consumption Recipes"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="consumption_id", type="integer", example=1),
+     *             @OA\Property(property="ingredient_id", type="integer", example=2),
+     *             @OA\Property(property="ingredient_amount", type="number", format="float", example=50.0),
+     *             @OA\Property(property="ingredient_unit", type="string", example="ml"),
+     *             @OA\Property(property="custom_drink_id", type="string", example="#1234")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Receta creada correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="La receta ya existe"
+     *     )
+     * )
      */
     public function store(StoreconsumptionRecipeRequest $request)
     {
@@ -47,7 +79,26 @@ class ConsumptionRecipeController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/consumption-recipes/{id}",
+     *     summary="Obtener una receta de consumo por ID",
+     *     tags={"Consumption Recipes"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la receta",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Receta encontrada"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Receta no encontrada"
+     *     )
+     * )
      */
     public function show($id)
     {
@@ -69,7 +120,33 @@ class ConsumptionRecipeController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/bartoyou/consumption-recipes/{id}",
+     *     summary="Actualizar una receta de consumo",
+     *     tags={"Consumption Recipes"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la receta",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="ingredient_amount", type="number", format="float", example=60.0),
+     *             @OA\Property(property="ingredient_unit", type="string", example="ml")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Receta actualizada correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Receta no encontrada"
+     *     )
+     * )
      */
     public function update(UpdateconsumptionRecipeRequest $request, int $id)
     {
@@ -84,7 +161,26 @@ class ConsumptionRecipeController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/bartoyou/consumption-recipes/{id}",
+     *     summary="Eliminar una receta de consumo",
+     *     tags={"Consumption Recipes"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la receta",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Receta eliminada correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Receta no encontrada"
+     *     )
+     * )
      */
     public function destroy(int $id)
     {
@@ -98,6 +194,42 @@ class ConsumptionRecipeController extends Controller
         return response("Eliminación completada.");
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/custom-drink",
+     *     summary="Crear una bebida personalizada",
+     *     tags={"Custom Drink"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"user_id", "base_drink", "base_drink_id", "ingredients"},
+     *             @OA\Property(property="user_id", type="integer", example=1),
+     *             @OA\Property(property="base_drink", type="string", example="Ron"),
+     *             @OA\Property(property="base_drink_id", type="integer", example=5),
+     *             @OA\Property(
+     *                 property="ingredients",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="ingredient_id", type="integer", example=2),
+     *                     @OA\Property(property="amount", type="number", format="float", example=30.5),
+     *                     @OA\Property(property="unit", type="string", example="ml"),
+     *                     @OA\Property(property="consumption_id", type="integer", example=5)
+     *                 )
+     *             ),
+     *             @OA\Property(property="ice", type="boolean", example=true),
+     *             @OA\Property(property="ice_type", type="string", example="picado")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Bebida personalizada creada correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación"
+     *     )
+     * )
+     */
     public function createCustomDrink(Request $request)
     {
         $request->validate([

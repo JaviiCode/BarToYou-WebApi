@@ -8,11 +8,20 @@ use App\Http\Resources\orderStatusResource;
 use App\Models\orderStatus;
 use App\Http\Requests\StoreorderStatusRequest;
 use App\Http\Requests\UpdateorderStatusRequest;
+use OpenApi\Annotations as OA;
 
 class OrderStatusController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/order-statuses",
+     *     summary="Listar estados de pedidos",
+     *     tags={"OrderStatuses"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista paginada de estados de pedidos"
+     *     )
+     * )
      */
     public function index(IndexorderStatusRequest $request)
     {
@@ -29,7 +38,26 @@ class OrderStatusController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/bartoyou/order-statuses",
+     *     summary="Crear un nuevo estado de pedido",
+     *     tags={"OrderStatuses"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="En preparación"),
+     *             @OA\Property(property="description", type="string", example="El pedido está siendo preparado")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Estado de pedido creado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="El estado de pedido ya existe"
+     *     )
+     * )
      */
     public function store(StoreorderStatusRequest $request)
     {
@@ -42,7 +70,26 @@ class OrderStatusController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/order-statuses/{id}",
+     *     summary="Obtener estado de pedido por ID",
+     *     tags={"OrderStatuses"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del estado de pedido",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Estado de pedido encontrado"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Estado de pedido no encontrado"
+     *     )
+     * )
      */
     public function show($id)
     {
@@ -64,7 +111,33 @@ class OrderStatusController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/bartoyou/order-statuses/{id}",
+     *     summary="Actualizar un estado de pedido",
+     *     tags={"OrderStatuses"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del estado de pedido",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="Completado"),
+     *             @OA\Property(property="description", type="string", example="El pedido ha sido completado")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Estado de pedido actualizado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Estado de pedido no encontrado"
+     *     )
+     * )
      */
     public function update(UpdateorderStatusRequest $request, int $id)
     {
@@ -79,7 +152,26 @@ class OrderStatusController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/bartoyou/order-statuses/{id}",
+     *     summary="Eliminar un estado de pedido",
+     *     tags={"OrderStatuses"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del estado de pedido",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Estado de pedido eliminado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Estado de pedido no encontrado"
+     *     )
+     * )
      */
     public function destroy(int $id)
     {

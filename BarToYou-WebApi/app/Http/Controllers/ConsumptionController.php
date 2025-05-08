@@ -9,11 +9,21 @@ use App\Models\consumption;
 use App\Http\Requests\StoreconsumptionRequest;
 use App\Http\Requests\UpdateconsumptionRequest;
 use Illuminate\Support\Str;
+use OpenApi\Annotations as OA;
+
 
 class ConsumptionController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/consumptions",
+     *     summary="Listar todos los consumos",
+     *     tags={"Consumptions"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Listado de consumos"
+     *     )
+     * )
      */
     public function index(IndexconsumptionRequest $request)
     {
@@ -30,7 +40,31 @@ class ConsumptionController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/bartoyou/consumptions",
+     *     summary="Crear un nuevo consumo",
+     *     tags={"Consumptions"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"name", "category_id", "image"},
+     *                 @OA\Property(property="name", type="string", example="Coca-Cola"),
+     *                 @OA\Property(property="category_id", type="integer", example=1),
+     *                 @OA\Property(property="image", type="file", format="binary")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Consumo creado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación"
+     *     )
+     * )
      */
     public function store(StoreconsumptionRequest $request)
     {
@@ -74,7 +108,26 @@ class ConsumptionController extends Controller
 
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/consumptions/{id}",
+     *     summary="Obtener un consumo por ID",
+     *     tags={"Consumptions"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del consumo",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Consumo encontrado"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Consumo no encontrado"
+     *     )
+     * )
      */
     public function show($id)
     {
@@ -96,7 +149,33 @@ class ConsumptionController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/bartoyou/consumptions/{id}",
+     *     summary="Actualizar un consumo",
+     *     tags={"Consumptions"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del consumo",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="Pepsi"),
+     *             @OA\Property(property="category_id", type="integer", example=2)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Consumo actualizado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Consumo no encontrado"
+     *     )
+     * )
      */
     public function update(UpdateconsumptionRequest $request, int $id)
     {
@@ -111,7 +190,26 @@ class ConsumptionController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/bartoyou/consumptions/{id}",
+     *     summary="Eliminar un consumo",
+     *     tags={"Consumptions"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del consumo a eliminar",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Consumo eliminado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Consumo no encontrado"
+     *     )
+     * )
      */
     public function destroy(int $id)
     {

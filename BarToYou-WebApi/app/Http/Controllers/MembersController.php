@@ -13,11 +13,20 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 
 class MembersController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/members",
+     *     summary="Listar miembros",
+     *     tags={"Members"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista paginada de miembros"
+     *     )
+     * )
      */
     public function index(IndexmembersRequest $request)
     {
@@ -34,7 +43,31 @@ class MembersController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/bartoyou/members",
+     *     summary="Crear un nuevo miembro",
+     *     tags={"Members"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="usuario123"),
+     *             @OA\Property(property="password", type="string", example="123456"),
+     *             @OA\Property(property="role_id", type="integer", example=2)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Miembro creado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="El miembro ya existe"
+     *     ),
+     *     @OA\Response(
+     *         response=409,
+     *         description="El nombre ya está registrado"
+     *     )
+     * )
      */
     public function store(StoremembersRequest $request)
     {
@@ -58,7 +91,26 @@ class MembersController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/members/{id}",
+     *     summary="Obtener miembro por ID",
+     *     tags={"Members"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del miembro",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Miembro encontrado"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Miembro no encontrado"
+     *     )
+     * )
      */
     public function show($id)
     {
@@ -80,7 +132,33 @@ class MembersController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/bartoyou/members/{id}",
+     *     summary="Actualizar miembro",
+     *     tags={"Members"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del miembro",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="usuario123_editado"),
+     *             @OA\Property(property="role_id", type="integer", example=2)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Miembro actualizado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Miembro no encontrado"
+     *     )
+     * )
      */
     public function update(UpdatemembersRequest $request, int $id)
     {
@@ -95,7 +173,26 @@ class MembersController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/bartoyou/members/{id}",
+     *     summary="Eliminar miembro",
+     *     tags={"Members"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del miembro",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Miembro eliminado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Miembro no encontrado"
+     *     )
+     * )
      */
     public function destroy(int $id)
     {
@@ -109,49 +206,70 @@ class MembersController extends Controller
         return response("Eliminación completada.");
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/check-token",
+     *     summary="Verificar validez de un token",
+     *     tags={"Members"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="token", type="string", example="abc123xyz")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Token válido, miembro retornado"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Token inválido o expirado"
+     *     )
+     * )
+     */
     public function checkToken(Request $request)
-{
-    // Validar que el token esté presente en la solicitud
-    $request->validate([
-        'token' => 'required|string',
-    ]);
+    {
+        // Validar que el token esté presente en la solicitud
+        $request->validate([
+            'token' => 'required|string',
+        ]);
 
-    // Obtener el token de la solicitud
-    $token = $request->input('token');
+        // Obtener el token de la solicitud
+        $token = $request->input('token');
 
-    // Buscar al miembro por el token en la tabla members
-    $member = DB::table('members')
-        ->where('token', $token)
-        ->first();
+        // Buscar al miembro por el token en la tabla members
+        $member = DB::table('members')
+            ->where('token', $token)
+            ->first();
 
-    // Si no se encuentra el miembro, devolver false
-    if (!$member) {
+        // Si no se encuentra el miembro, devolver false
+        if (!$member) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token inválido.',
+            ], 401);
+        }
+
+        // Verificar si el token ha expirado
+        $now = Carbon::now();
+        if ($member->expiration_date_token && $now->greaterThan($member->expiration_date_token)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token expirado.',
+            ], 401);
+        }
+
+        // Devolver los datos del miembro
         return response()->json([
-            'success' => false,
-            'message' => 'Token inválido.',
-        ], 401);
+            'success' => true,
+            'member' => [
+                'id' => $member->id,
+                'name' => $member->name,
+                'email' => $member->email,
+                'role_id' => $member->role_id,
+                'token' => $member->token,
+                'expiration_date_token' => $member->expiration_date_token,
+            ],
+        ]);
     }
-
-    // Verificar si el token ha expirado
-    $now = Carbon::now();
-    if ($member->expiration_date_token && $now->greaterThan($member->expiration_date_token)) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Token expirado.',
-        ], 401);
-    }
-
-    // Devolver los datos del miembro
-    return response()->json([
-        'success' => true,
-        'member' => [
-            'id' => $member->id,
-            'name' => $member->name,
-            'email' => $member->email,
-            'role_id' => $member->role_id,
-            'token' => $member->token,
-            'expiration_date_token' => $member->expiration_date_token,
-        ],
-    ]);
-}
 }

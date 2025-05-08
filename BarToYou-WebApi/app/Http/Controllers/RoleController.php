@@ -8,11 +8,21 @@ use App\Http\Resources\roleResource;
 use App\Models\role;
 use App\Http\Requests\StoreroleRequest;
 use App\Http\Requests\UpdateroleRequest;
+use OpenApi\Annotations as OA;
+
 
 class RoleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/roles",
+     *     summary="Listar roles",
+     *     tags={"Roles"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista paginada de roles"
+     *     )
+     * )
      */
     public function index(IndexroleRequest $request)
     {
@@ -29,7 +39,26 @@ class RoleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/bartoyou/roles",
+     *     summary="Crear un nuevo rol",
+     *     tags={"Roles"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="Administrador"),
+     *             @OA\Property(property="description", type="string", example="Rol con acceso completo a la plataforma")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Rol creado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="El rol ya existe"
+     *     )
+     * )
      */
     public function store(StoreroleRequest $request)
     {
@@ -42,7 +71,26 @@ class RoleController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/roles/{id}",
+     *     summary="Obtener rol por ID",
+     *     tags={"Roles"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del rol",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Rol encontrado"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Rol no encontrado"
+     *     )
+     * )
      */
     public function show(int $id)
     {
@@ -64,7 +112,33 @@ class RoleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/bartoyou/roles/{id}",
+     *     summary="Actualizar un rol",
+     *     tags={"Roles"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del rol",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="Moderador"),
+     *             @OA\Property(property="description", type="string", example="Rol con permisos limitados")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Rol actualizado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Rol no encontrado"
+     *     )
+     * )
      */
     public function update(UpdateroleRequest $request, int $id)
     {
@@ -79,7 +153,26 @@ class RoleController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/bartoyou/roles/{id}",
+     *     summary="Eliminar un rol",
+     *     tags={"Roles"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del rol",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Rol eliminado correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Rol no encontrado"
+     *     )
+     * )
      */
     public function destroy(int $id)
     {

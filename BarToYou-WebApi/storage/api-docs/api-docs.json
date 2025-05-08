@@ -1,0 +1,1647 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "BarToYou API",
+        "description": "Documentación Swagger de la API de BarToYou",
+        "contact": {
+            "email": "soporte@bartoyou.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/bartoyou/consumption-categories": {
+            "get": {
+                "tags": [
+                    "Consumption Categories"
+                ],
+                "summary": "Listar categorías de consumo",
+                "operationId": "43c5db2631fa324a9f02db1bbfb734da",
+                "responses": {
+                    "200": {
+                        "description": "Listado paginado de categorías"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Consumption Categories"
+                ],
+                "summary": "Crear una nueva categoría de consumo",
+                "operationId": "410ff12bd133f88a88b7429d838114eb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id",
+                                    "nombre"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Bebidas"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Categoría creada con éxito"
+                    },
+                    "400": {
+                        "description": "La categoría ya existe"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/consumption-categories/{id}": {
+            "get": {
+                "tags": [
+                    "Consumption Categories"
+                ],
+                "summary": "Obtener una categoría de consumo por ID",
+                "operationId": "7d33ee02665555f5eba5ab464644602c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la categoría",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Categoría encontrada"
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Consumption Categories"
+                ],
+                "summary": "Actualizar una categoría de consumo",
+                "operationId": "fa21baea8df73ca06e22a68f91d480a3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la categoría a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Comida"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Categoría actualizada correctamente"
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Consumption Categories"
+                ],
+                "summary": "Eliminar una categoría de consumo",
+                "operationId": "82e8ac1d350422090525e0cf970fe674",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la categoría a eliminar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Eliminación completada"
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/consumptions": {
+            "get": {
+                "tags": [
+                    "Consumptions"
+                ],
+                "summary": "Listar todos los consumos",
+                "operationId": "ad81c93ce48703764dee49d6d72f6d88",
+                "responses": {
+                    "200": {
+                        "description": "Listado de consumos"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Consumptions"
+                ],
+                "summary": "Crear un nuevo consumo",
+                "operationId": "db6fb90d5ea83444f6f5974f1671689c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "category_id",
+                                    "image"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Coca-Cola"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "image": {
+                                        "type": "file",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Consumo creado correctamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/consumptions/{id}": {
+            "get": {
+                "tags": [
+                    "Consumptions"
+                ],
+                "summary": "Obtener un consumo por ID",
+                "operationId": "dda30765f4b713e28b9c510bf036b7b0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del consumo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Consumo encontrado"
+                    },
+                    "404": {
+                        "description": "Consumo no encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Consumptions"
+                ],
+                "summary": "Actualizar un consumo",
+                "operationId": "1eba700c0f08455f80697ebaf9d78c19",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del consumo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Pepsi"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Consumo actualizado correctamente"
+                    },
+                    "404": {
+                        "description": "Consumo no encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Consumptions"
+                ],
+                "summary": "Eliminar un consumo",
+                "operationId": "c6f1b5ee2f1fa79364e0d834b171496d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del consumo a eliminar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Consumo eliminado correctamente"
+                    },
+                    "404": {
+                        "description": "Consumo no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/consumption-recipes": {
+            "get": {
+                "tags": [
+                    "Consumption Recipes"
+                ],
+                "summary": "Listar todas las recetas de consumo",
+                "operationId": "438b126d08b89c809822fac869702e46",
+                "responses": {
+                    "200": {
+                        "description": "Lista de recetas paginada"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Consumption Recipes"
+                ],
+                "summary": "Crear una nueva receta de consumo",
+                "operationId": "fefa50cfc223438ff673da2a3a1d242c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "consumption_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "ingredient_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "ingredient_amount": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 50
+                                    },
+                                    "ingredient_unit": {
+                                        "type": "string",
+                                        "example": "ml"
+                                    },
+                                    "custom_drink_id": {
+                                        "type": "string",
+                                        "example": "#1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Receta creada correctamente"
+                    },
+                    "400": {
+                        "description": "La receta ya existe"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/consumption-recipes/{id}": {
+            "get": {
+                "tags": [
+                    "Consumption Recipes"
+                ],
+                "summary": "Obtener una receta de consumo por ID",
+                "operationId": "a295bc7be6966ae67ab255d227526341",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la receta",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Receta encontrada"
+                    },
+                    "404": {
+                        "description": "Receta no encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Consumption Recipes"
+                ],
+                "summary": "Actualizar una receta de consumo",
+                "operationId": "044126e04ecfc88ad12de1abff28a076",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la receta",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "ingredient_amount": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 60
+                                    },
+                                    "ingredient_unit": {
+                                        "type": "string",
+                                        "example": "ml"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Receta actualizada correctamente"
+                    },
+                    "404": {
+                        "description": "Receta no encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Consumption Recipes"
+                ],
+                "summary": "Eliminar una receta de consumo",
+                "operationId": "46a463198801d239743711791a3a3728",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la receta",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Receta eliminada correctamente"
+                    },
+                    "404": {
+                        "description": "Receta no encontrada"
+                    }
+                }
+            }
+        },
+        "/api/custom-drink": {
+            "post": {
+                "tags": [
+                    "Custom Drink"
+                ],
+                "summary": "Crear una bebida personalizada",
+                "operationId": "91e47356907f72661d1bffc4a34a8fa6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "base_drink",
+                                    "base_drink_id",
+                                    "ingredients"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "base_drink": {
+                                        "type": "string",
+                                        "example": "Ron"
+                                    },
+                                    "base_drink_id": {
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "ingredients": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "ingredient_id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "amount": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 30.5
+                                                },
+                                                "unit": {
+                                                    "type": "string",
+                                                    "example": "ml"
+                                                },
+                                                "consumption_id": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "ice": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "ice_type": {
+                                        "type": "string",
+                                        "example": "picado"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Bebida personalizada creada correctamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/ingredient-categories": {
+            "get": {
+                "tags": [
+                    "Ingredient Categories"
+                ],
+                "summary": "Listar categorías de ingredientes",
+                "operationId": "a23065a23ef6cdf70fffdc5e64f9deee",
+                "responses": {
+                    "200": {
+                        "description": "Lista paginada de categorías"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Ingredient Categories"
+                ],
+                "summary": "Crear una nueva categoría de ingrediente",
+                "operationId": "31770c45f983fd56f47416b20d9f8c75",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Lácteos"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Productos derivados de la leche"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Categoría creada correctamente"
+                    },
+                    "400": {
+                        "description": "La categoría ya existe"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/ingredient-categories/{id}": {
+            "get": {
+                "tags": [
+                    "Ingredient Categories"
+                ],
+                "summary": "Obtener una categoría de ingrediente por ID",
+                "operationId": "c57054fec7366fc51858b0d45e346847",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la categoría",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Categoría encontrada"
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Ingredient Categories"
+                ],
+                "summary": "Actualizar una categoría de ingrediente",
+                "operationId": "4a44c3dfa5b530212514bf06f84435e2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la categoría",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Cítricos"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Frutas cítricas"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Categoría actualizada correctamente"
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Ingredient Categories"
+                ],
+                "summary": "Eliminar una categoría de ingrediente",
+                "operationId": "326f210f1c21f65dd530ad26060f47f2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la categoría",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Categoría eliminada correctamente"
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/ingredients": {
+            "get": {
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Listar ingredientes",
+                "operationId": "e22783b38c9545e78edc1699b60197e6",
+                "responses": {
+                    "200": {
+                        "description": "Lista paginada de ingredientes"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Crear un nuevo ingrediente",
+                "operationId": "d55eda658d473bec0dcaab230dfce24e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Vodka"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "unit": {
+                                        "type": "string",
+                                        "example": "ml"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ingrediente creado correctamente"
+                    },
+                    "400": {
+                        "description": "El ingrediente ya existe"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/ingredients/{id}": {
+            "get": {
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Obtener un ingrediente por ID",
+                "operationId": "3f526792343eb4e55375074d20a2b5ae",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del ingrediente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ingrediente encontrado"
+                    },
+                    "404": {
+                        "description": "Ingrediente no encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Actualizar un ingrediente",
+                "operationId": "18125fa086e8fdc3da6a27ec522b2652",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del ingrediente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Zumo de piña"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "unit": {
+                                        "type": "string",
+                                        "example": "ml"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ingrediente actualizado correctamente"
+                    },
+                    "404": {
+                        "description": "Ingrediente no encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Eliminar un ingrediente",
+                "operationId": "5900e6cae3ecf27ec195ad4306f0e690",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del ingrediente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ingrediente eliminado correctamente"
+                    },
+                    "404": {
+                        "description": "Ingrediente no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/members": {
+            "get": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Listar miembros",
+                "operationId": "5b0455a3a013746c085a28f1a4a58482",
+                "responses": {
+                    "200": {
+                        "description": "Lista paginada de miembros"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Crear un nuevo miembro",
+                "operationId": "47cd4a2b07df349dd05d5882ad7c8b08",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "usuario123"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "123456"
+                                    },
+                                    "role_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Miembro creado correctamente"
+                    },
+                    "400": {
+                        "description": "El miembro ya existe"
+                    },
+                    "409": {
+                        "description": "El nombre ya está registrado"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/members/{id}": {
+            "get": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Obtener miembro por ID",
+                "operationId": "5d8fbc42bf911b3f6be6bf760c930c3c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del miembro",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Miembro encontrado"
+                    },
+                    "404": {
+                        "description": "Miembro no encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Actualizar miembro",
+                "operationId": "f786651931b88561c9123ea28d040fd7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del miembro",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "usuario123_editado"
+                                    },
+                                    "role_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Miembro actualizado correctamente"
+                    },
+                    "404": {
+                        "description": "Miembro no encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Eliminar miembro",
+                "operationId": "a74848982be2849fe565d6377bbe5d97",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del miembro",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Miembro eliminado correctamente"
+                    },
+                    "404": {
+                        "description": "Miembro no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/check-token": {
+            "post": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Verificar validez de un token",
+                "operationId": "ef8250c49c138cd7a2cd5cc19a6c301e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "abc123xyz"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token válido, miembro retornado"
+                    },
+                    "401": {
+                        "description": "Token inválido o expirado"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Listar pedidos",
+                "operationId": "651029e5d3166a1658c4429b585b298c",
+                "responses": {
+                    "200": {
+                        "description": "Lista paginada de pedidos"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Crear un nuevo pedido",
+                "operationId": "be4bec2a3ca8406710f01b439fc9074a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "member_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "consumption_id": {
+                                        "type": "integer",
+                                        "example": 10
+                                    },
+                                    "status_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "date_time": {
+                                        "type": "string",
+                                        "example": "2025-05-08T12:30:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Pedido creado correctamente"
+                    },
+                    "400": {
+                        "description": "El pedido ya existe"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/orders/{id}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Obtener pedido por ID",
+                "operationId": "ca3833626aec34cb2e0a466c21cf7453",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del pedido",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pedido encontrado"
+                    },
+                    "404": {
+                        "description": "Pedido no encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Actualizar un pedido",
+                "operationId": "dc9ba500a985038f878a830cdb091f69",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del pedido",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "date_time": {
+                                        "type": "string",
+                                        "example": "2025-05-09T13:00:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Pedido actualizado correctamente"
+                    },
+                    "404": {
+                        "description": "Pedido no encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Eliminar un pedido",
+                "operationId": "f347269123fd0305ddb7139bedc50f03",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del pedido",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pedido eliminado correctamente"
+                    },
+                    "404": {
+                        "description": "Pedido no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/orders/user/{userId}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Obtener pedidos por usuario",
+                "operationId": "67215369ded44133608a638b3c8693d2",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de pedidos del usuario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "orderid": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "custom_drink_id": {
+                                                "type": "string",
+                                                "example": "#1234"
+                                            },
+                                            "user_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "date_time": {
+                                                "type": "string",
+                                                "example": "2025-05-08T12:30:00"
+                                            },
+                                            "status": {
+                                                "type": "string",
+                                                "example": "En preparación"
+                                            },
+                                            "items": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Bebida Personalizada"
+                                                        },
+                                                        "ingredients": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "ingredient": {
+                                                                        "type": "string",
+                                                                        "example": "Azúcar"
+                                                                    },
+                                                                    "amount": {
+                                                                        "type": "string",
+                                                                        "example": "1 cucharadita"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No se encontraron pedidos para el usuario"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/order-statuses": {
+            "get": {
+                "tags": [
+                    "OrderStatuses"
+                ],
+                "summary": "Listar estados de pedidos",
+                "operationId": "6d21b5d191a2337e5ea9d00b1c454f62",
+                "responses": {
+                    "200": {
+                        "description": "Lista paginada de estados de pedidos"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "OrderStatuses"
+                ],
+                "summary": "Crear un nuevo estado de pedido",
+                "operationId": "68b10fd1b12867fde522343f54e7eee4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "En preparación"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "El pedido está siendo preparado"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Estado de pedido creado correctamente"
+                    },
+                    "400": {
+                        "description": "El estado de pedido ya existe"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/order-statuses/{id}": {
+            "get": {
+                "tags": [
+                    "OrderStatuses"
+                ],
+                "summary": "Obtener estado de pedido por ID",
+                "operationId": "720cc94823875ff27238494ffe8b30a6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del estado de pedido",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Estado de pedido encontrado"
+                    },
+                    "404": {
+                        "description": "Estado de pedido no encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "OrderStatuses"
+                ],
+                "summary": "Actualizar un estado de pedido",
+                "operationId": "f6192def483c22ea499385ecc1e250a9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del estado de pedido",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Completado"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "El pedido ha sido completado"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Estado de pedido actualizado correctamente"
+                    },
+                    "404": {
+                        "description": "Estado de pedido no encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "OrderStatuses"
+                ],
+                "summary": "Eliminar un estado de pedido",
+                "operationId": "c1877b24f2560c84b1a7111dfbe5195f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del estado de pedido",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Estado de pedido eliminado correctamente"
+                    },
+                    "404": {
+                        "description": "Estado de pedido no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/roles": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Listar roles",
+                "operationId": "32610cc6efe9d229c06a5e217277ec85",
+                "responses": {
+                    "200": {
+                        "description": "Lista paginada de roles"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Crear un nuevo rol",
+                "operationId": "023132726aaf97738cdd00b12ffbdaf7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Administrador"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Rol con acceso completo a la plataforma"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Rol creado correctamente"
+                    },
+                    "400": {
+                        "description": "El rol ya existe"
+                    }
+                }
+            }
+        },
+        "/api/bartoyou/roles/{id}": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Obtener rol por ID",
+                "operationId": "a12840234fcd868c4f686ef32c983cf7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del rol",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rol encontrado"
+                    },
+                    "404": {
+                        "description": "Rol no encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Actualizar un rol",
+                "operationId": "cf2b5a7782a35a097e959153600421f9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del rol",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Moderador"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Rol con permisos limitados"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Rol actualizado correctamente"
+                    },
+                    "404": {
+                        "description": "Rol no encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Eliminar un rol",
+                "operationId": "04e82e84d302d48a6a3e83cf10e711fa",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del rol",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rol eliminado correctamente"
+                    },
+                    "404": {
+                        "description": "Rol no encontrado"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Consumption Categories",
+            "description": "Consumption Categories"
+        },
+        {
+            "name": "Consumptions",
+            "description": "Consumptions"
+        },
+        {
+            "name": "Consumption Recipes",
+            "description": "Consumption Recipes"
+        },
+        {
+            "name": "Custom Drink",
+            "description": "Custom Drink"
+        },
+        {
+            "name": "Ingredient Categories",
+            "description": "Ingredient Categories"
+        },
+        {
+            "name": "Ingredients",
+            "description": "Ingredients"
+        },
+        {
+            "name": "Members",
+            "description": "Members"
+        },
+        {
+            "name": "Orders",
+            "description": "Orders"
+        },
+        {
+            "name": "OrderStatuses",
+            "description": "OrderStatuses"
+        },
+        {
+            "name": "Roles",
+            "description": "Roles"
+        }
+    ]
+}

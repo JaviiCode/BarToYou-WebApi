@@ -8,11 +8,21 @@ use App\Http\Resources\consumptionCategoryResource;
 use App\Models\consumptionCategory;
 use App\Http\Requests\StoreconsumptionCategoryRequest;
 use App\Http\Requests\UpdateconsumptionCategoryRequest;
+use OpenApi\Annotations as OA;
+
 
 class ConsumptionCategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/consumption-categories",
+     *     summary="Listar categorías de consumo",
+     *     tags={"Consumption Categories"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Listado paginado de categorías"
+     *     )
+     * )
      */
     public function index(IndexconsumptionCategoryRequest $request)
     {
@@ -29,7 +39,27 @@ class ConsumptionCategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/bartoyou/consumption-categories",
+     *     summary="Crear una nueva categoría de consumo",
+     *     tags={"Consumption Categories"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"id", "nombre"},
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="nombre", type="string", example="Bebidas")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Categoría creada con éxito"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="La categoría ya existe"
+     *     )
+     * )
      */
     public function store(StoreconsumptionCategoryRequest $request)
     {
@@ -42,7 +72,26 @@ class ConsumptionCategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/bartoyou/consumption-categories/{id}",
+     *     summary="Obtener una categoría de consumo por ID",
+     *     tags={"Consumption Categories"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la categoría",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Categoría encontrada"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Categoría no encontrada"
+     *     )
+     * )
      */
     public function show($id)
     {
@@ -64,7 +113,32 @@ class ConsumptionCategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/bartoyou/consumption-categories/{id}",
+     *     summary="Actualizar una categoría de consumo",
+     *     tags={"Consumption Categories"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la categoría a actualizar",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="nombre", type="string", example="Comida")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Categoría actualizada correctamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Categoría no encontrada"
+     *     )
+     * )
      */
     public function update(UpdateconsumptionCategoryRequest $request, int $id)
     {
@@ -79,7 +153,26 @@ class ConsumptionCategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/bartoyou/consumption-categories/{id}",
+     *     summary="Eliminar una categoría de consumo",
+     *     tags={"Consumption Categories"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID de la categoría a eliminar",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Eliminación completada"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Categoría no encontrada"
+     *     )
+     * )
      */
     public function destroy(int $id)
     {
