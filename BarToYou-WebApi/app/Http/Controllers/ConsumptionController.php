@@ -8,6 +8,7 @@ use App\Http\Resources\consumptionResource;
 use App\Models\consumption;
 use App\Http\Requests\StoreconsumptionRequest;
 use App\Http\Requests\UpdateconsumptionRequest;
+use Illuminate\Support\Str;
 
 class ConsumptionController extends Controller
 {
@@ -39,13 +40,25 @@ class ConsumptionController extends Controller
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // Guardar la imagen en el storage
-        $path = $request->file('image')->store('public/drinks');
+        $image = $request->file('image');
 
-        // Obtener la URL de la imagen
-        $imageUrl = asset(str_replace('public/', 'storage/', $path));
+        // Limpiar y generar nombre único
+        $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+        $cleanName = Str::slug($originalName);
+        $extension = $image->getClientOriginalExtension();
+        $uniqueFilename = $cleanName . '-' . Str::random(10) . '.' . $extension;
 
-        // Guardar la bebida en la BD
+        // Guardar en public/Drinks
+        $destinationPath = public_path('Drinks');
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+
+        $image->move($destinationPath, $uniqueFilename);
+
+        // Ruta relativa para guardar en la base de datos
+        $imageUrl = "/drinks/" . $uniqueFilename;
+
         $drink = Consumption::create([
             'name' => $request->name,
             'category_id' => $request->category_id,
@@ -57,6 +70,8 @@ class ConsumptionController extends Controller
             'drink' => $drink
         ], 201);
     }
+
+
 
     /**
      * Display the specified resource.
