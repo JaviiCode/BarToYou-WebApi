@@ -26,6 +26,6 @@ class members extends Model
 
     public function orders()
     {
-        return $this->hasMany(Order::class, 'user_id');
+        return $this->hasMany(Order::class, 'member_id', "id");
     }
 }

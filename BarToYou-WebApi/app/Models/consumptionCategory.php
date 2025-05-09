@@ -20,4 +20,14 @@ class consumptionCategory extends Model
     {
         return $this->hasMany(Consumption::class, 'category_id');
     }
+
+    public function deleteRelations() {
+        $consumitions = $this->consumptions();
+
+        foreach ($consumitions->get() as $consu) {
+            $consu->deleteRelations();
+        }
+
+        $consumitions->delete();
+    }
 }

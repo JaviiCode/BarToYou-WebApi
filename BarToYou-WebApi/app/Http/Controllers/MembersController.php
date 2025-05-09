@@ -202,6 +202,9 @@ class MembersController extends Controller
             return response('Miembro no encontrado.', 404);
         }
 
+        //Eliminar relaciones con las ordenes
+        $member->orders()->delete();
+
         $member->delete();
         return response("Eliminación completada.");
     }

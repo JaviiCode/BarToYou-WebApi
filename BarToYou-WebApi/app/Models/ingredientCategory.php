@@ -20,4 +20,15 @@ class ingredientCategory extends Model
     {
         return $this->hasMany(Ingredient::class, 'category_id');
     }
+
+    public function deleteRelations() {
+        $ingredientes = $this->ingredients();
+
+        foreach ($ingredientes->get() as $ingre) {
+            error_log("adfafas");
+            $ingre->deleteRelations();
+        }
+
+        $ingredientes->delete();
+    }
 }

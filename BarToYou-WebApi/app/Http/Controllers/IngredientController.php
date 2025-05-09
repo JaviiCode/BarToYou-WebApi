@@ -184,6 +184,9 @@ class IngredientController extends Controller
             return response('Ingrediente no encontrado.', 404);
         }
 
+        //Borrar elementos que dependan del ingrediente
+        $ingredient->deleteRelations();
+
         $ingredient->delete();
         return response("Eliminación completada.");
     }

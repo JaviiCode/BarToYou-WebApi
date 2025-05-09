@@ -28,4 +28,14 @@ class ingredient extends Model
     {
         return $this->hasMany(ConsumptionRecipe::class, 'ingredient_id');
     }
+
+    public function deleteRelations() {
+        $recipes = $this->recipes();
+
+        foreach ($recipes->get() as $reci) {
+            $reci->deleteRelations();
+        }
+
+        $recipes->delete();
+    }
 }

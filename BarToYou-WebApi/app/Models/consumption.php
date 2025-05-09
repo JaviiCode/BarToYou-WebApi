@@ -23,13 +23,25 @@ class consumption extends Model
         return $this->belongsTo(ConsumptionCategory::class, 'category_id');
     }
 
-    public function order()
+    public function orders()
     {
-        return $this->hasMany(Order::class, 'consumption_id');
+        return $this->hasManyThrough(Order::class, ConsumptionRecipe::class, 'consumption_id', 'consumption_recipe_id');
     }
 
     public function recipes()
     {
         return $this->hasMany(ConsumptionRecipe::class, 'consumption_id');
+    }
+
+    public function deleteRelations() {
+        $consuRecipes = $this->recipes();
+
+        foreach ($consuRecipes->get() as $recipe) {
+            $recipe->deleteRelations();
+        }
+
+        $consuRecipes->delete();
+
+        return true;
     }
 }

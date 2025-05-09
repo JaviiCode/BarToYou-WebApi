@@ -20,4 +20,10 @@ class orderStatus extends Model
     {
         return $this->hasMany(Order::class, 'status_id');
     }
+
+    public function deleteRelations() {
+        $orders = $this->orders();
+
+        $orders->delete();
+    }
 }

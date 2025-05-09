@@ -190,6 +190,8 @@ class ConsumptionRecipeController extends Controller
             return response('Receta de consumo no encontrada.', 404);
         }
 
+        $recipe->deleteRelations();
+
         $recipe->delete();
         return response("Eliminación completada.");
     }
@@ -234,11 +236,8 @@ class ConsumptionRecipeController extends Controller
     {
         $request->validate([
             'user_id' => 'required|integer',
-            'base_drink' => 'required|string',
             'base_drink_id' => 'required|integer',
             'ingredients' => 'required|array',
-            'ingredients.*.ingredient_id' => 'required|integer',
-            'ingredients.*.amount' => 'required|numeric',
             'ice' => 'nullable|boolean',
             'ice_type' => 'nullable|string|in:normal,picado',
         ]);
@@ -254,18 +253,9 @@ class ConsumptionRecipeController extends Controller
             'custom_drink_id' => $customDrinkId,
         ]);
 
-        // Insertar la base de la bebida
-        $baseRecipe = ConsumptionRecipe::create([
-            'consumption_id' => $request->base_drink_id,
-            'ingredient_id' => $request->base_drink_id,
-            'ingredient_amount' => 50.00,
-            'ingredient_unit' => 'ml',
-            'custom_drink_id' => $customDrinkId,
-        ]);
-
         foreach ($request->ingredients as $ingredient) {
             ConsumptionRecipe::create([
-                'consumption_id' => $ingredient['consumption_id'],
+                'consumption_id' => $request->base_drink_id,
                 'ingredient_id' => $ingredient['ingredient_id'],
                 'ingredient_amount' => $ingredient['amount'],
                 'ingredient_unit' => $ingredient['unit'],

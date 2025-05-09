@@ -25,7 +25,7 @@ class UpdateorderRequest extends FormRequest
     {
         return [
             'member_id' => 'sometimes|required|exists:members,id',
-            'consumption_recipe_id' => 'sometimes|required|exists:ConsumptionRecipe,id',
+            'consumption_recipe_id' => 'sometimes|nullable|exists:ConsumptionRecipe,id',
             'consumption_id' => 'sometimes|nullable|exists:Consumption,id',
             'date_time' => 'sometimes|required|date',
             'quantity' => 'sometimes|required|integer',

@@ -219,6 +219,8 @@ class ConsumptionController extends Controller
             return response('Consumo no encontrado.', 404);
         }
 
+        $consumption->deleteRelations();
+
         $consumption->delete();
         return response("Eliminación completada.");
     }

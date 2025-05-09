@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class consumptionRecipe extends Model
+class ConsumptionRecipe extends Model
 {
-    /** @use HasFactory<\Database\Factories\ConsumptionRecipeFactory> */
     use HasFactory;
+
     protected $table = 'ConsumptionRecipe';
     protected $primaryKey = 'id';
 
@@ -17,20 +17,25 @@ class consumptionRecipe extends Model
         'ingredient_id',
         'ingredient_amount',
         'ingredient_unit',
-        'custom_drink_id', 
+        'custom_drink_id',
     ];
 
+    // Relación con Order
     public function order()
     {
-        return $this->belongsTo(Order::class, 'consumption_recipe_id');
+        return $this->hasMany(Order::class, 'consumption_recipe_id');
     }
     public function consumption()
     {
         return $this->belongsTo(Consumption::class, 'consumption_id');
     }
-
     public function ingredient()
     {
         return $this->belongsTo(Ingredient::class, 'ingredient_id');
+    }
+
+    public function deleteRelations() {
+        error_log("relation consu recip");
+        $this->order()->delete();
     }
 }

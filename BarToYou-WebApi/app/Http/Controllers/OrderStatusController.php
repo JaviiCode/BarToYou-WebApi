@@ -181,6 +181,8 @@ class OrderStatusController extends Controller
             return response('Estado de pedido no encontrado.', 404);
         }
 
+        $status->deleteRelations();
+
         $status->delete();
         return response("Eliminación completada.");
     }

@@ -23,7 +23,6 @@ Route::get('/orders/user/{userId}', [OrderController::class, 'getOrdersByUser'])
 //Ruta para crear bebidas custom
 Route::post('/custom-drink', [ConsumptionRecipeController::class, 'createCustomDrink']);
 
-
 //, 'middleware' => 'authMiddleware' (Poner justo aqui abajo)
 Route::group(['prefix' => 'bartoyou', 'middleware' => 'authMiddleware'], function () {
 

@@ -182,6 +182,9 @@ class IngredientCategoryController extends Controller
             return response('Categoría de ingrediente no encontrada.', 404);
         }
 
+        //borrar relaciones dependientes
+        $category->deleteRelations();
+
         $category->delete();
         return response("Eliminación completada.");
     }
