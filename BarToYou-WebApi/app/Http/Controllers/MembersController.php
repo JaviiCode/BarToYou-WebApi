@@ -8,7 +8,7 @@ use App\Http\Resources\membersResource;
 use App\Models\members;
 use App\Http\Requests\StoremembersRequest;
 use App\Http\Requests\UpdatemembersRequest;
-use App\Models\role;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -30,7 +30,7 @@ class MembersController extends Controller
      */
     public function index(IndexmembersRequest $request)
     {
-        $members = members::paginate(10);
+        $members = Members::paginate(10);
         return new membersCollection($members);
     }
 
@@ -71,10 +71,10 @@ class MembersController extends Controller
      */
     public function store(StoremembersRequest $request)
     {
-        if (members::find($request->id)) {
+        if (Members::find($request->id)) {
             return response()->json(['message' => 'Error, usuario ya existe.'], 400);
         }
-        if (members::where('name', $request->name)->exists()) {
+        if (Members::where('name', $request->name)->exists()) {
             return response()->json(['message' => 'El nombre ya está registrado.'], 409);
         }
         $hashedPassword = Hash::make($request->password);
@@ -114,7 +114,7 @@ class MembersController extends Controller
      */
     public function show($id)
     {
-        $member = members::with('role')->find($id);
+        $member = Members::with('Role')->find($id);
 
         if (!$member) {
             return response('Miembro no encontrado.', 404);
@@ -162,7 +162,7 @@ class MembersController extends Controller
      */
     public function update(UpdatemembersRequest $request, int $id)
     {
-        $member = members::find($id);
+        $member = Members::find($id);
 
         if (!$member) {
             return response('Miembro no encontrado.', 404);
@@ -196,7 +196,7 @@ class MembersController extends Controller
      */
     public function destroy(int $id)
     {
-        $member = members::find($id);
+        $member = Members::find($id);
 
         if (!$member) {
             return response('Miembro no encontrado.', 404);
@@ -241,7 +241,7 @@ class MembersController extends Controller
         $token = $request->input('token');
 
         // Buscar al miembro por el token en la tabla members
-        $member = DB::table('members')
+        $member = DB::table('Members')
             ->where('token', $token)
             ->first();
 

@@ -24,12 +24,12 @@ class StoreorderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'member_id' => 'required|exists:members,id',
+            'member_id' => 'required|exists:Members,id',
             'consumption_recipe_id' => 'exists:consumptionrecipe,id',
-            'consumption_id' => 'exists:consumption,id',
+            'consumption_id' => 'exists:Consumption,id',
             'date_time' => 'date',
             'quantity' => 'required|integer',
-            'status_id' => 'required|exists:orderstatus,id',
+            'status_id' => 'required|exists:orderStatus,id',
         ];
     }
 }

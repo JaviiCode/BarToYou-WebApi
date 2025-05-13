@@ -29,7 +29,7 @@ class order extends Model
 
     public function recipes()
     {
-        return $this->hasMany(ConsumptionRecipe::class, 'id', 'consumption_recipe_id',);
+        return $this->hasMany(consumptionRecipe::class, 'id', 'consumption_recipe_id',);
     }
 
     public function consumption()
@@ -38,7 +38,7 @@ class order extends Model
 }
     public function status()
     {
-        return $this->belongsTo(OrderStatus::class, 'status_id');
+        return $this->belongsTo(orderStatus::class, 'status_id');
     }
 
     public function formattedOrder()

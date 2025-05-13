@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Registrar middlewares de ruta
         $middleware->alias([
-            'authMiddleware' => \App\Http\Middleware\AuthMiddleware::class,
+            'authMiddleware' => \App\Http\Middleware\authMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

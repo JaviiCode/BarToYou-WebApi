@@ -26,7 +26,7 @@ class StoreconsumptionRequest extends FormRequest
         return [
             'name' => 'required|string|max:100',
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'category_id' => 'required|exists:consumptioncategory,id',
+            'category_id' => 'required|exists:ConsumptionCategory,id',
         ];
     }
 }

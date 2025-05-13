@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\IndexconsumptionRequest;
 use App\Http\Resources\consumptionCollection;
 use App\Http\Resources\consumptionResource;
-use App\Models\consumption;
+use App\Models\Consumption;
 use App\Http\Requests\StoreconsumptionRequest;
 use App\Http\Requests\UpdateconsumptionRequest;
 use Illuminate\Support\Str;
@@ -27,7 +27,7 @@ class ConsumptionController extends Controller
      */
     public function index(IndexconsumptionRequest $request)
     {
-        $consumption = consumption::all();
+        $consumption = Consumption::all();
         return new consumptionCollection($consumption);
     }
 

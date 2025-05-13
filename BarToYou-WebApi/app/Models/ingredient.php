@@ -26,7 +26,7 @@ class ingredient extends Model
 
     public function recipes()
     {
-        return $this->hasMany(ConsumptionRecipe::class, 'ingredient_id');
+        return $this->hasMany(consumptionRecipe::class, 'ingredient_id');
     }
 
     public function deleteRelations() {

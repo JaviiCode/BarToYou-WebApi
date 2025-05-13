@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\IndexingredientRequest;
 use App\Http\Resources\ingredientCollection;
 use App\Http\Resources\ingredientResource;
-use App\Models\ingredient;
+use App\Models\Ingredient;
 use App\Http\Requests\StoreingredientRequest;
 use App\Http\Requests\UpdateingredientRequest;
 use OpenApi\Annotations as OA;

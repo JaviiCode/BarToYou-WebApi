@@ -27,7 +27,7 @@ class ConsumptionRecipe extends Model
     }
     public function consumption()
     {
-        return $this->belongsTo(Consumption::class, 'consumption_id');
+        return $this->belongsTo(consumption::class, 'consumption_id');
     }
     public function ingredient()
     {

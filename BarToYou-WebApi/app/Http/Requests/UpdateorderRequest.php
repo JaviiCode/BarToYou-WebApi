@@ -24,7 +24,7 @@ class UpdateorderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'member_id' => 'sometimes|required|exists:members,id',
+            'member_id' => 'sometimes|required|exists:Members,id',
             'consumption_recipe_id' => 'sometimes|nullable|exists:ConsumptionRecipe,id',
             'consumption_id' => 'sometimes|nullable|exists:Consumption,id',
             'date_time' => 'sometimes|required|date',

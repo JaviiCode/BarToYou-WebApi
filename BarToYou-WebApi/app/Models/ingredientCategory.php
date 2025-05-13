@@ -25,7 +25,6 @@ class ingredientCategory extends Model
         $ingredientes = $this->ingredients();
 
         foreach ($ingredientes->get() as $ingre) {
-            error_log("adfafas");
             $ingre->deleteRelations();
         }
 

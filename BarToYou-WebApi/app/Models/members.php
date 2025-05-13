@@ -9,7 +9,7 @@ class members extends Model
 {
     /** @use HasFactory<\Database\Factories\MembersFactory> */
     use HasFactory;
-    protected $table = 'members';
+    protected $table = 'Members';
 
     protected $fillable = [
         'name',

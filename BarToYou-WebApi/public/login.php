@@ -39,7 +39,7 @@ $name = $data['name'];
 $password = $data['password'];
 
 // Buscar usuario por nombre en la base de datos
-$stmt = $pdo->prepare("SELECT * FROM members WHERE name = :name LIMIT 1");
+$stmt = $pdo->prepare("SELECT * FROM Members WHERE name = :name LIMIT 1");
 $stmt->execute(["name" => $name]);
 $user = $stmt->fetch();
 
@@ -53,7 +53,7 @@ $token = bin2hex(random_bytes(32));
 $expiration = date("Y-m-d H:i:s", strtotime("+20 hour"));
 
 // Guardar el token en la base de datos
-$stmt = $pdo->prepare("UPDATE members SET token = :token, expiration_date_token = :expiration WHERE id = :id");
+$stmt = $pdo->prepare("UPDATE Members SET token = :token, expiration_date_token = :expiration WHERE id = :id");
 $stmt->execute([
     "token" => $token,
     "expiration" => $expiration,

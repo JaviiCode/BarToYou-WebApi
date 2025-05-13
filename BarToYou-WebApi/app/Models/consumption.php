@@ -20,7 +20,7 @@ class consumption extends Model
 
     public function category()
     {
-        return $this->belongsTo(ConsumptionCategory::class, 'category_id');
+        return $this->belongsTo(consumptionCategory::class, 'category_id');
     }
 
     public function orders()
@@ -30,7 +30,7 @@ class consumption extends Model
 
     public function recipes()
     {
-        return $this->hasMany(ConsumptionRecipe::class, 'consumption_id');
+        return $this->hasMany(consumptionRecipe::class, 'consumption_id');
     }
 
     public function deleteRelations() {

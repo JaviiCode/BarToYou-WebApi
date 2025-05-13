@@ -6,7 +6,7 @@ use App\Http\Requests\IndexorderRequest;
 use App\Http\Resources\orderCollection;
 use App\Http\Resources\orderResource;
 use App\Models\consumptionRecipe;
-use App\Models\order;
+use App\Models\Order;
 use App\Http\Requests\StoreorderRequest;
 use App\Http\Requests\UpdateorderRequest;
 use Illuminate\Support\Facades\Storage;
@@ -29,7 +29,7 @@ class OrderController extends Controller
      */
     public function index(IndexorderRequest $request)
     {
-        $order = order::paginate(10);
+        $order = Order::paginate(10);
         return new orderCollection($order);
     }
 
@@ -247,7 +247,7 @@ class OrderController extends Controller
     public function getOrdersByUser($userId)
     {
         $orders = Order::where('member_id', $userId)
-            ->with(['status', 'consumption'])
+            ->with(['status', 'Consumption'])
             ->get();
 
         return response()->json($orders->map(function ($order) {
