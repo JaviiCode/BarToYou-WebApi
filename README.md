@@ -1,7 +1,5 @@
 # BarToYou API REST
 
-![Logo BarToYou](./assets/logo.png)
-
 ## Descripción del proyecto
 
 BarToYou es una solución innovadora para el sector de la hostelería, centrada en facilitar la gestión y el pedido de bebidas en hoteles todo incluido.  
